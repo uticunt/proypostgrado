@@ -1,0 +1,240 @@
+{% extends "plantilla.html" %}
+{% block title %} POSTGRADO | Evaluaciones {% endblock title %}
+
+{% block content %}
+    <div class="p-3">
+        <div class="card mt-3">
+        <div class="card-header d-flex justify-content-between p-3">
+            <div>
+                <h1 class="card-title align-items-center"><b>Lista de Evaluaciones</b></h1>
+            </div>            
+            {% if perms.appevaluacion.view_doctorado %}
+            <div class="ml-auto">
+                <a href="{% url 'crear_evaluacion' %}" class='btn btn-sm btn-primary'>
+                    <i class='fas fa-plus'></i> NUEVO
+                </a>
+            </div>  
+            {% endif %}          
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-6 col-md-5 col-sm-5">
+                    <label for="unidadSelect">Buscar:</label>
+                    <form action="." method="GET">
+                        <div class="input-group">
+                            <input type="text" name="buscar" id="buscar" class="form-control" autofocus placeholder="Buscar codigo" value="{{ buscar }}"><span class="input-group-btn">
+                            <button class="btn btn-primary"><i class="fa fa-search"></i></button></span>                            
+                        </div>                        
+                    </form>
+                </div>
+                <div class="col-6 col-md-2 col-sm-1"></div>
+                
+                <div class="col-6 col-md-2 col-sm-1" >   
+                    <label for="">Estado</label>                                        
+                        <select class="form-control" id="filtroEstadoEvaluacion">
+                            <option value="">Todos</option>
+                            <option value="evaluado">Evaluado</option>
+                            <option value="no_evaluado">No evaluado</option>
+                        </select>                                  
+                </div>
+                {% comment %}
+                <div class="col-6 col-md-2 col-sm-1">
+                    <label for="unidadSelect">Unidades:</label>
+                    <select class="form-control" id="filtroUnidad" name="unidad">
+                        <option value="">Todos</option>
+                        {% for unidad in unidades %}
+                            <option value="{{ unidad.idUnidad }}">{{ unidad.des_unidad }}</option>
+                        {% endfor %}
+                    </select>
+                </div>    
+                {% endcomment %}         
+            </div>
+            
+            <br>
+            <div class="col-12 col-lg-12 col-md-12 col-sm-6">
+                <div class="table-responsive">
+                    <table class="table" style="width:100%" id="tablaEvaluaciones">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Id</th>
+                                <th>Codigo </th>
+                                <th>Evaluador</th>                        
+                                <th>Postulante</th>
+                                <th>Estado</th>
+                                <th>Fecha Registro</th>
+                                <th><center>Opciones</center></th>
+                            </tr>
+                        </thead>
+                        {% if page_obj %}
+                        {% for item_evaluacion in page_obj %}
+                        <tr>
+                            <td>{{ item_evaluacion.idEvaluacion}}</td>
+                            <td>{{ item_evaluacion.codigo_evaluacion}}</td>
+                            <td>{{ item_evaluacion.evaluador }}</td>                    
+                            <td>{{ item_evaluacion.postulante }}</td>
+                            <td><b>{{ item_evaluacion.estado_evaluacion|yesno:"Evaluado,No evaluado"}}</b></td>               
+                            <td>{{ item_evaluacion.fecha_creacion }}</td>
+                            <td style="text-align: center;">
+                                {% comment %}<a href="{% url 'editar_evaluacion' item_evaluacion.idEvaluacion %}" class="btn btn-success btn-sm"><i class="fa fa-edit"></i></a> {% endcomment %}
+                                {% if item_evaluacion.estado_evaluacion %}
+                                <a href="{% url 'reporte_postulacion_pdf' item_evaluacion.idEvaluacion %}" onclick="" class="btn btn-info btn-sm"><i class="fa fa-download"></i></a>
+                                {% else %}
+                                <a href="{% url 'evaluar_curriculum' item_evaluacion.idEvaluacion %}" onclick="" class="btn btn-secondary btn-sm"><i class="fa-solid fa-eye"></i></a>
+                                {% endif %}
+                                {% if perms.appevaluacion.view_doctorado %}<a href="#" onclick="eliminarevaluacion('{{item_evaluacion.idEvaluacion}}')" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a> {% endif %}                     
+                            </td>                    
+                        </tr>
+                        {% endfor %}                 
+                        {% else %}                
+                        <tr style="text-align: center;">
+                            <td colspan="4">
+                                <p>No hay Registros</p>
+                            </td>
+                        </tr>
+                        {% endif %}
+                    </table>
+                </div>
+            </div>
+            
+            
+        </div>
+
+        <div class="card-footer">           
+            <div class="d-flex justify-content-end pt-2">
+                <nav aria-label="pagination-django">
+                    <ul class="pagination">
+                        {% if page_obj.has_previous %}                    
+                            <li class="page-item"><a class="page-link" href="?page=1&estado_evaluacion={{ request.GET.estado_evaluacion }}">Primera</a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}&estado_evaluacion={{ request.GET.estado_evaluacion }}"><<</a></li>                        
+                        {% endif %}
+                        <li class="page-item"><a class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
+                        {% if page_obj.has_next %}                       
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}&estado_evaluacion={{ request.GET.estado_evaluacion }}">>></a></li>
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&estado_evaluacion={{ request.GET.estado_evaluacion }}">Ultima</a></li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </div>
+                  
+    </div>
+    <script>     
+        function obtenerParametroURL(parametro) {
+          var params = new URLSearchParams(window.location.search);
+          return params.get(parametro);
+        }
+                
+        document.addEventListener('DOMContentLoaded', function() {
+          var estadoEvaluacion = obtenerParametroURL('estado_evaluacion'); 
+          if (estadoEvaluacion) {
+            var select = document.getElementById('filtroEstadoEvaluacion');
+            select.value = estadoEvaluacion;
+          }
+        });
+    </script>
+{% endblock content %}
+
+{% block js %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
+    {% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+            "title": "Éxito",
+            "text":"{{m}}",
+            "icon":"success"
+            })
+            console.log("{{m}}")
+        </script>
+    {% endfor %}
+    {% endif %}
+
+    <script>
+        function eliminarevaluacion(id){
+            Swal.fire({ "title":"¿Realmente desea eliminar Registro?",
+            "text":"Código :"+ id ,
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si",
+            "reverseButton":true,
+            "confirmButtonColor":"#dc3545"
+            }).then(function(result){ if(result.isConfirmed){
+                window.location.replace(window.location.origin+"/evaluacion/delete/"+id+"/") }
+        });
+        }       
+    </script>
+
+    <script>
+        document.getElementById('filtroEstadoEvaluacion').addEventListener('change', function() {
+        var selectedValue = this.value;
+        window.location.href = '?estado_evaluacion=' + selectedValue;
+        });
+    </script>
+{% endblock js %} 
+
+{% comment %}
+{% block css %}
+    <style>
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+    
+    .switch input { 
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+    }
+    
+    input:checked + .slider {
+      background-color: #2196F3;
+    }
+    
+    input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+    }
+    
+    input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+    }
+    
+    /* Rounded sliders */
+    .slider.round {
+      border-radius: 34px;
+    }
+    
+    .slider.round:before {
+      border-radius: 50%;
+    }
+    </style>
+{% endblock css %}
+{% endcomment %}

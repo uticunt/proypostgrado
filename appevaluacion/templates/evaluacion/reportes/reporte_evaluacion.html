@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Postulación</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .container {
+            width: 100%;
+            margin: 0 auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .report-header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .report-section {
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #04AA6D;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="report-header">
+            <h1>Reporte de Postulación</h1>
+            <p><strong>Nombre del Postulante:</strong> {{ postulante.nombres }}</p>
+            <p><strong>DNI:</strong> {{ postulante.dni }}</p>
+            <p><strong>Email:</strong> {{ postulante.email }}</p>
+        </div>
+        
+        <div class="report-section">
+            <h2>Resultados de la Postulación</h2>
+            <table>
+                <tr>
+                    <th>Área Evaluada</th>
+                    <th>Puntaje</th>
+                </tr>
+                <!-- Suponiendo que resultados es una lista de diccionarios con 'area' y 'puntaje' -->
+               
+            </table>
+        </div>
+    </div>
+</body>
+</html>

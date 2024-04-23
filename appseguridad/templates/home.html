@@ -1,0 +1,15 @@
+{% extends "plantilla.html" %}
+{% block title %} POSTGRADO | Home {% endblock title %}
+{% comment %} {% block titleContent %}  {% endblock titleContent %} {% endcomment %}
+{% load static %}
+{% block content %}
+    <div class="p-5">
+        
+        <div class="card p-4 d-flex justify-content-center align-items-center" >
+            <center><h2 class="text-uppercase"><b>¡Bienvenido {{request.user.username}}👋!</b></h2></center><br>
+            <img class="" src="{% static 'toast/images/home_postgrado.jpg'%}" style="width: 100%;" alt="home_postgrado"> 
+        </div>
+    </div>
+{% endblock %} 
+
+ 

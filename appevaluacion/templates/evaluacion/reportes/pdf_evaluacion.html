@@ -1,0 +1,168 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reporte de Evaluación</title>
+    {% load static %}
+
+    <!-- Estilos -->
+    <style>
+        .clearfix:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+
+        a {
+        color: #5D6975;
+        text-decoration: underline;
+        }
+
+        header {
+        padding: 10px 0;
+        margin-bottom: 30px;
+        }     
+      
+
+        table{
+            width: 100%;
+            border: 1px solid #bec6ce;
+           
+            border-spacing: 0;
+            margin-bottom: 20px;            
+        }
+
+        th{
+            padding: 3px;
+        }
+
+        .aspecto{
+            width: 150px;
+        }
+
+        td{
+            text-align: center;
+        }
+        td.descrip{
+            text-align: left;
+            padding: 1.5px;
+            width: 400px;
+        }
+        td.puntaje{
+            text-align: center;
+            padding: 1.5px;
+            width: 90px;
+        }
+
+
+    
+
+       
+    </style>
+
+
+</head>
+<body>
+    <header class="clearfix">
+        <div class="clearfix" >           
+            <div><b>Escuela de Posgrado | UNT</b></div>   
+            <img src="{{ STATIC_URL }} img/logo_postgrado.png" alt="">         
+        </div>              
+    </header>
+    <main >
+        <div style="margin-top: 20px;">                              
+            <h1 style="margin-top: 10px; margin-left: 190px; font-size: 1.8em;">REPORTE EVALUCIÓN CURRICULAR</h1>
+            <hr>
+        </div>
+
+        <h2 style=" margin-left: 50px; margin-top: 30px; letter-spacing: 2px;font-size: 13px;"><b>DATOS DEL POSTULANTE</b></h2>
+        <div class="div" style=" margin-left: 70px;">
+            
+            <div style="margin: 2px; font-size: 13px;"><strong>APELLIDOS: </strong>{{ resultados_postulante.ap_paterno }} {{ resultados_postulante.ap_materno }}</div>
+            <div style="margin: 2px; font-size: 13px;"><strong>NOMBRES: </strong> {{ resultados_postulante.nombres }}</div>
+            <div style="margin: 2px; font-size: 13px;"><strong>DNI: </strong> {{ resultados_postulante.dni }}</div>
+            <div style="margin: 2px; font-size: 13px;"><strong>CELULAR: </strong> {{ resultados_postulante.telefono }}</div>
+            <div style="margin: 2px; font-size: 13px;"><strong>CORREO ELECTRÓNICO: </strong> {{ resultados_postulante.email }}</div>
+            <div style="margin: 2px; font-size: 13px;"><strong>MENCION: </strong> {{mencion}} </div>            
+            <div style="margin: 2px; font-size: 13px;"><strong>UNIDAD: </strong> {{ resultados_postulante.unidad }}</div>
+            
+        </div>
+
+        <h2 style=" margin-left: 50px; margin-top: 30px; letter-spacing: 2px;font-size: 13px;"><b>DETALLE DE LA EVALUCIÓN</b></h2>
+        <div style="width: 100%;">            
+            <center>
+                <table style="margin-top: 15px; font-size: 12px;">
+                    <thead>
+                        <tr>
+                            <th class="aspecto" >ASPECTO</th>
+                            <th >DESCRIPCIÓN</th>
+                            <th class="puntaje">PUNTUACION</th>                
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td rowspan="6" class="aspecto">Nivel Académico</td>
+                            <td class="descrip">Experiencia Laboral y/o profesional </td>            
+                            <td class="puntaje">{{ resultados_detalle.puntaje_promedioP }}</td>
+                        </tr>
+                        <tr>                    
+                            <td class="descrip">Titulos(s) y/o grados(s) académicos</td>            
+                            <td class="puntaje">{{ resultados_detalle.puntaje_cursosEva }}</td>
+                          </tr>
+                          <tr>                    
+                            <td class="descrip">Estudios de posgrado</td>            
+                            <td>{{ resultados_detalle.puntaje_partCientifica }}</td>
+                          </tr>
+                          <tr>                    
+                            <td class="descrip">Participación en eventos académicos y/o científicos </td>            
+                            <td>{{ resultados_detalle.puntaje_docenciaUni }}</td>
+                          </tr>
+                          <tr>                    
+                            <td class="descrip"> Constancia de docencia universitaria </td>            
+                            <td>{{ resultados_detalle.puntaje_idiomaExt }}</td>
+                          </tr>
+                          <tr>                    
+                            <td style="padding: 4px; border-top: 1px solid black;"><b>SUBTOTAL</b></td>            
+                            <td style="padding: 4px; border-top: 1px solid black;">{{ resultados_detalle.puntaje_capacitacion }}</td>
+                          </tr>
+                          <tr>  
+                            <td rowspan="3" class="aspecto">Producccion Cientifica</td>                  
+                            <td class="descrip">Certificado de idioma extranjero </td>            
+                            <td>{{ resultados_detalle.puntaje_libroInscritos }}</td>
+                          </tr>
+                          <tr>
+                            <td class="descrip">Producción académica y/o científica acreditada</td>            
+                            <td>{{ resultados_detalle.puntaje_publicaciones }}</td>
+                          </tr>
+                          <tr>                    
+                            <td style="padding: 4px; border-top: 1px solid black;"><b>SUBTOTAL</b></td>            
+                            <td style="padding: 4px; border-top: 1px solid black;">{{ resultados_detalle.puntaje_produccionCien }}</td>
+                          </tr>
+                          <tr>                
+                            <td colspan="2" style="padding: 4px; border-top: 1px solid black;"><b>PUNTAJE FINAL</b></td>                        
+                            <td style="padding: 4px; border-top: 1px solid black;"><b>{{ resultados_detalle.puntajeFinal }}</b></td>
+                          </tr>
+                        
+                    </tbody>
+                </table>
+            </center>
+           
+        </div>
+         <div style="text-align: justify; ">
+            <b>NOTA:</b>
+            El currículum vítae de los postulantes es evaluado en el Pabellón de la
+            Escuela de Posgrado por el mismo Jurado de Admisión que evalúa en la Entrevista Personal
+         </div>
+
+    </main>
+   <br><br><br><br><br><br>
+    <footer> 
+        <hr>
+        <div>Contactos:</div>
+        <div>Admisión: +51 973 467 422</div>
+        <div>Mesa de Partes: +51 968 909 260</div>
+    </footer>
+</body>
+</html>

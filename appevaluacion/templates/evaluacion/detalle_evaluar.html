@@ -1,0 +1,549 @@
+{% extends "plantilla.html" %}
+{% block title %} POSTGRADO | CURRICULUM  {% endblock title %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+
+<div class="p-3">
+    <div class="card card-info mx-4 my-4">
+        <div class="card-header">
+            <h1 class="card-title">EVALUAR CURRICULUM</h1>
+        </div>
+        <div class="card-body">
+            <form method="post">
+            {% csrf_token %}
+            <div class="container">
+                <div class="row">
+                    <!-- Datos Personal -->
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="col-md-11"><h5 class="card-title"><b>DATOS DEL POSTULANTE</b></h5>  </div> 
+                            </div>
+                            <div class="card-body">                                                           
+                                <div class="row">
+                                    <div class="col-md-1">  </div>
+                                    <div class="col-md-4">                           
+                                        <b>Apellido Paterno: </b><p>{{ postulante.ap_paterno }}</p>                     
+                                    </div>
+                                    <div class="col-md-4">                         
+                                        <b>Apellido Materno: </b><p>{{ postulante.ap_materno }}</p>                            
+                                    </div>
+                                    <div class="col-md-3">                          
+                                        <b>Nombres: </b><p>{{ postulante.nombres }}</p>
+                                    </div>                            
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-1">  </div>
+                                    <div class="col-md-4">                           
+                                        <b>DNI: </b><p>{{ postulante.dni }}</p>                     
+                                    </div>
+                                    <div class="col-md-4">                           
+                                        <b>Celular: </b><p>{{ postulante.telefono }}</p>                     
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        <b>Correo electronico: </b><p>{{ postulante.email }}</p>                  
+                                    </div>                                                
+                                </div>
+
+                                <div class="row">               
+                                    <div class="col-md-1">  </div>
+                                    <div class="col-md-4">                          
+                                         {% if postulante.doctorado %}
+                                            <b>Mención: </b><p>{{ postulante.doctorado }}</p>    
+                                         {% else %}
+                                            <b>Mención: </b><p>{{ postulante.maestria }}</p>
+                                         {% endif %}
+                                    </div>
+                                    <div class="col-md-4">                           
+                                        <b>Unidad: </b><p>{{ postulante.unidad }}</p>                     
+                                    </div>                                    
+                                                              
+                                </div>
+
+                                <div class="row">    
+                                    <div class="col-md-1"></div>  
+                                    <div class="row">
+                                        <div class="col-md-1"></div>  
+                                        <div class="col-md-6">
+                                            <b>Curriculum Vitae: </b>
+                                        </div>
+                                    </div>        
+                                    <div class="row">
+                                        <div class="col-md-1"></div>  
+                                        <div class="col-md-10">
+                                            <div class="input-group">
+                                                <input type="text" id="" name="" class="form-control" value="{{ postulante.pdf_curriculum }}" readonly>
+                                                <a href="{{ postulante.pdf_curriculum }}" target="_blank" rel="noopener noreferrer" class="btn btn-secondary"><i class="fa-solid fa-eye"></i></a>
+                                            </div>                                
+                                        </div>
+                                    </div>                                                                                       
+                                </div>                                            
+                            </div>      
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <!-- CAPACITACIÓN -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="col-md-12"><h5 class="card-title"><b>NIVEL ACADEMICO</b></h5></div> 
+                            </div> 
+                            <div class="card-body">                                                          
+                                <!--  -->
+                                <div class="row"> 
+                                    <div class="col-md-9">
+                                        <b>Experiencia Laboral y/o profesional</b>  
+                                        <button id="boton1" style="border: none; background-color: #fff; color: #3568c0; text-decoration: underline;"><i class="fa-solid fa-info-circle fa-lg" style="color: #3568c0;"></i></button> 
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_promedioP | as_crispy_field }}
+                                    </div>
+                                    
+                                </div>
+                                 <div id="caja1" class="caja-desplegable" style="display: none;">
+                                    <div class="card card-body">                                                                                         
+                                            
+                                           <p style="text-align: justify;">
+                                            Experiencia profesional y/o laboral declarada de los ultimos cinco años
+                                           </p>
+                                    </div>
+                                </div>  
+                              <!--  -->                               
+
+                                <div class="row">
+                                    <div class="col-md-9">                           
+                                       <b>Titulos(s) y/o grados(s) académicos</b>
+                                       <button id="boton2" style="border: none; background-color: #fff; color: #3568c0; text-decoration: underline;"><i class="fa-solid fa-info-circle fa-lg" style="color: #3568c0;"></i></button> 
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_cursosEva | as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div id="caja2" class="caja-desplegable" style="display: none;">
+                                    <div class="card card-body">
+                                         <div class="table-responsive" id="tableContainer">
+                                             <table class="table table-striped table-sm">
+                                               <thead>
+                                                 <tr>
+                                                   <th>NIVEL</th>
+                                                   <th>PUNTAJE</th>
+                                                 </tr>
+                                               </thead>
+                                               <tbody>
+                                                 <tr>
+                                                   <td>Titulos Profesional</td>
+                                                   <td>3.5 puntos</td>
+                                                 </tr>
+                                                 <tr>
+                                                   <td>Grado bachiller</td>
+                                                   <td>2.5 puntos</td>
+                                                 </tr>
+                                                 <tr>
+                                                   <td>Grado de maestro</td>
+                                                   <td>3.5 puntos</td>
+                                                 </tr>                                                                                              
+                                               </tbody>
+                                             </table>
+                                           </div> 
+                                    </div>
+                                </div>
+                                <!-- <br> -->
+
+                                <div class="row">
+                                    <div class="col-md-9">                           
+                                        <b>Estudios de posgrado</b>
+                                        <button id="boton3" style="border: none; background-color: #fff; color: #3568c0; text-decoration: underline;"><i class="fa-solid fa-info-circle fa-lg" style="color: #3568c0;"></i></button>                                                                   
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_partCientifica | as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div id="caja3" class="caja-desplegable" style="display: none;">
+                                    <div class="card card-body">
+                                        <p style="text-align: justify;">
+                                            Estudios de posgrado en los últimos cinco (05) años
+                                        </p>
+                                    </div>
+                                </div>
+                                
+                                <!--  -->                               
+                                <div class="row">
+                                    <div class="col-md-9">                           
+                                       <b>Participación en eventos académicos y/o científicos</b>
+                                       <button id="boton4" style="border: none; background-color: #fff; color: #3568c0; text-decoration: underline;"><i class="fa-solid fa-info-circle fa-lg" style="color: #3568c0;"></i></button>
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_docenciaUni | as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div id="caja4" class="caja-desplegable" style="display: none;">
+                                    <div class="card card-body">
+                                        <p>Participación en eventos académicos y/o científicos en los últimos cinco años</p>
+                                        <div class="table-responsive" id="tableContainer">
+                                            <table class="table table-striped table-sm">
+                                              <thead>
+                                                <tr>
+                                                  <th>CERTIFICADO</th>
+                                                  <th>RANGO</th>
+                                                  <th>PUNTAJE</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr>
+                                                  <td rowspan="4">Certificado como ponente o moderador</td>
+                                                  <td>1 - 2</td>
+                                                  <td>1.5 puntos</td>                                                  
+                                                </tr>
+                                                <tr>
+                                                    <td>3 - 4</td>
+                                                    <td>3.0 puntos</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>5 - 6</td>
+                                                  <td>4.5 puntos</td>
+                                                </tr> 
+                                                <tr>
+                                                   <td>7 a más</td>
+                                                   <td>6.0 puntos</td>
+                                                </tr>    
+                                                <tr>
+                                                    <td rowspan="4">Certificado como asistente o tallerista</td>
+                                                    <td>1 - 2</td>
+                                                    <td>0.8 puntos</td>                                                  
+                                                  </tr>
+                                                  <tr>
+                                                      <td>3 - 4</td>
+                                                      <td>1.6 puntos</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>5 - 6</td>
+                                                    <td>2.4 puntos</td>
+                                                  </tr> 
+                                                  <tr>
+                                                     <td>7 a más</td>
+                                                     <td>3.2 puntos</td>
+                                                  </tr> 
+                                                  <tr>
+                                                    <td rowspan="4">Certificado como organizador</td>
+                                                    <td>1 - 2</td>
+                                                    <td>1.2 puntos</td>                                                  
+                                                  </tr>
+                                                  <tr>
+                                                      <td>3 - 4</td>
+                                                      <td>2.4 puntos</td>
+                                                  </tr>
+                                                  <tr>
+                                                    <td>5 - 6</td>
+                                                    <td>3.6 puntos</td>
+                                                  </tr> 
+                                                  <tr>
+                                                     <td>7 a más</td>
+                                                     <td>4.8 puntos</td>
+                                                  </tr>                                                                                              
+                                              </tbody>
+                                            </table>
+                                          </div>                                         
+                                    </div>
+                                </div>
+                                <!--  -->    
+                                <br>                            
+                                <div class="row">
+                                    <div class="col-md-9">                           
+                                       <b>Constancia de docencia universitaria</b>
+                                       <button id="boton5" style="border: none; background-color: #fff; color: #3568c0; text-decoration: underline;"><i class="fa-solid fa-info-circle fa-lg" style="color: #3568c0;"></i></button>
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_idiomaExt | as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div id="caja5" class="caja-desplegable" style="display: none;">
+                                    <div class="card card-body">
+                                        <p>Constancia de docencia universitaria en los últimos cinco (05) años</p>
+                                        <div class="table-responsive" id="tableContainer">
+                                            <table class="table table-striped table-sm">
+                                              <thead>
+                                                <tr>
+                                                  <th>RANGO</th>
+                                                  <th>PUNTAJE</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                <tr>
+                                                  <td>1 - 2</td>
+                                                  <td>1.5 puntos</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>3 - 4</td>
+                                                  <td>3.0 puntos</td>
+                                                </tr>
+                                                <tr>
+                                                  <td>5 - 6</td>
+                                                  <td>4.5 puntos</td>
+                                                </tr>
+                                                <tr>
+                                                   <td>7 a más</td>
+                                                   <td>6.0 puntos</td>
+                                                  </tr>                                                                                              
+                                              </tbody>
+                                            </table>
+                                          </div>                                        
+                                    </div>
+                                </div>
+
+                            </div> 
+                            <div class="card-footer">                                                          
+                                <div class="row">
+                                    <div class="col-md-4">                                   
+                                     </div>
+                                    <div class="col-md-5" style="padding-top: 10px;">                           
+                                       <b>PUNTAJE PARCIAL</b>
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_capacitacion | as_crispy_field }}
+                                    </div>                                   
+                                </div>                                                                                        
+                            </div>    
+                        </div>
+                    </div>
+
+                      <!-- PRODUCCIÓN CIENTIFICA -->
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="col-md-12"><h5 class="card-title"><b>PRODUCCIÓN CIENTIFICA</b></h5></div> 
+                            </div>
+                            <div class="card-body">
+                                <!--  -->                                                          
+                                <div class="row">
+                                    <div class="col-md-9">                           
+                                        <b>Certificado de idioma extranjero </b>
+                                        <button id="boton6" style="border: none; background-color: #fff; color: #3568c0; text-decoration: underline;"><i class="fa-solid fa-info-circle fa-lg" style="color: #3568c0;"></i></button>
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_libroInscritos | as_crispy_field }}
+                                    </div>
+                                </div>
+                                
+                                <div id="caja6" class="caja-desplegable" style="display: none;">
+                                    <div class="card card-body">
+                                        <p>Certificado de idioma extranjero (indicar solo el nivel máximo alcanzado por idioma), expedido
+                                            por una institución acreditada o universidad peruana o extranjera</p>   
+                                            <div class="table-responsive" id="tableContainer">
+                                                <table class="table table-striped table-sm">
+                                                  <thead>
+                                                    <tr>
+                                                      <th>NIVEL</th>
+                                                      <th>PUNTAJE</th>
+                                                    </tr>
+                                                  </thead>
+                                                  <tbody>
+                                                    <tr>
+                                                      <td>Nivel avanzado</td>
+                                                      <td>1.5 puntos</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Nivel intermedio</td>
+                                                      <td>0.8 puntos</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Nivel básico</td>
+                                                      <td>0.5 puntos</td>
+                                                    </tr>                                                                                                                                                
+                                                  </tbody>
+                                                </table>
+                                              </div>                                        
+                                    </div>
+                                </div>
+                                <br>
+                                <!--  -->
+                                <div class="row">
+                                    <div class="col-md-9">                           
+                                        <b>Producción académica y/o científica acreditada</b>
+                                        <button id="boton7" style="border: none; background-color: #fff; color: #3568c0; text-decoration: underline;"><i class="fa-solid fa-info-circle fa-lg" style="color: #3568c0;"></i></button>                            
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_publicaciones | as_crispy_field }}
+                                    </div>
+                                </div>
+                                <div id="caja7" class="caja-desplegable" style="display: none;">
+                                    <div class="card card-body">
+                                        <p>Producción académica y/o científica acreditada de los últimos cinco (05) años</p>
+                                        <ul>                                    
+                                            <li>Autor de libro o tesis --> 1.5 p. c/u (también se considera al coautor)</li>
+                                            <li>Autor de artículo publicado o por publicarse -->0.8 p /artículo</li>                                           
+                                        </ul> 
+                                    </div>
+                                </div>
+                                <!--  -->                          
+                           
+                               <br><br>
+                                                                         
+                            </div>  
+                            <div class="card-footer">                                                          
+                                <div class="row" >
+                                    <div class="col-md-4">                                   
+                                     </div>
+                                    <div class="col-md-5" style="padding-top: 10px;">                           
+                                       <b>PUNTAJE PARCIAL</b>
+                                    </div>
+                                    <div class="col-md-3">                           
+                                        {{ form.puntaje_produccionCien | as_crispy_field }}                                        
+                                    </div>                                   
+                                </div>                                                                                        
+                            </div>      
+                        </div>
+                    </div>
+                </div>
+              
+                 
+             
+                <div class="col-md-6">
+
+                </div>
+
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">                   
+                            <div class="col-md-1">  
+                            </div>
+                            <div class="col-md-9">                           
+                                {{ form.evaluacion | as_crispy_field }}
+                            </div>   
+                                                 
+                            <div class="col-md-2">  
+                            </div>  
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-1">  
+                            </div>
+                            <div class="col-md-2" style="padding-top: 10px; margin-right: -20px;">                           
+                                <b>PUNTAJE FINAL</b>
+                            </div>
+                        </div>
+                        <div class="row">                   
+                            <div class="col-md-1">  
+                            </div>
+                            <div class="col-md-2">                           
+                                {{ form.puntajeFinal | as_crispy_field }}
+                            </div>    
+                            <div class="col-md-3" style="padding-top: 10px; margin-left: -20px;">                           
+                                <p><b>/66.9 puntos</b></p>
+                            </div>                     
+                            <div class="col-md-4">  
+                            </div>  
+
+                        </div>
+                        
+                    </div>
+                </div>
+
+                
+
+                <div class="d-flex justify-content-end">
+                    <a href="{% url 'listar_evaluacion' %}" class="btn btn-secondary">Cancelar</a> &nbsp;
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </div>
+                       
+       
+
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+{% endblock%} 
+
+{% block js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        function calcularTotales() {
+            // Obtén los valores de los campos
+            let puntajePromedioP = parseFloat(document.getElementById('id_puntaje_promedioP').value) || 0;
+            let puntajeCursosEva = parseFloat(document.getElementById('id_puntaje_cursosEva').value) || 0;
+            let puntajePartCientifica = parseFloat(document.getElementById('id_puntaje_partCientifica').value) || 0;
+            let puntajeDocenciaUni = parseFloat(document.getElementById('id_puntaje_docenciaUni').value) || 0;
+            let puntajeIdiomaExt = parseFloat(document.getElementById('id_puntaje_idiomaExt').value) || 0;
+    
+            let puntajeLibroInscritos = parseFloat(document.getElementById('id_puntaje_libroInscritos').value) || 0;
+            let puntajePublicaciones = parseFloat(document.getElementById('id_puntaje_publicaciones').value) || 0;          
+    
+            // Realiza los cálculos
+            let puntajeCapacitacion = puntajePromedioP + puntajeCursosEva + puntajePartCientifica + puntajeDocenciaUni + puntajeIdiomaExt;
+            let puntajeProduccionCien = puntajeLibroInscritos + puntajePublicaciones ;
+            let puntajeFinal = puntajeCapacitacion + puntajeProduccionCien;
+    
+            // Asigna los resultados a los campos correspondientes
+            document.getElementById('id_puntaje_capacitacion').value = puntajeCapacitacion.toFixed(2);
+            document.getElementById('id_puntaje_produccionCien').value = puntajeProduccionCien.toFixed(2);
+            document.getElementById('id_puntajeFinal').value = puntajeFinal.toFixed(2);
+        }
+    
+        // Agrega listeners a los campos relevantes
+        let campos = ['id_puntaje_promedioP', 'id_puntaje_cursosEva', 'id_puntaje_partCientifica', 'id_puntaje_docenciaUni', 'id_puntaje_idiomaExt', 'id_puntaje_libroInscritos', 'id_puntaje_publicaciones'];
+        campos.forEach(function(campo) {
+            document.getElementById(campo).addEventListener('change', calcularTotales);
+        });
+    });
+    </script>
+
+    <!-- Scripts de Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Obtener todos los botones y cajas desplegables
+        const botones = document.querySelectorAll('button[id^="boton"]');
+        const cajas = document.querySelectorAll('.caja-desplegable');
+    
+        // Función para ocultar una caja desplegable
+        function ocultarCaja(caja) {
+            caja.style.display = 'none';
+        }
+    
+        // Función para cerrar la caja automáticamente después de 4 segundos
+        function cerrarCajaAutomaticamente(caja) {
+            setTimeout(function() {
+                ocultarCaja(caja);
+            }, 4000); // 4000 milisegundos = 4 segundos
+        }
+    
+        // Agregar evento de clic a cada botón
+        botones.forEach(function(boton) {
+            boton.addEventListener('click', function(event) {
+                // Evitar el envío del formulario
+                event.preventDefault();
+    
+                // Ocultar todas las cajas desplegables
+                cajas.forEach(ocultarCaja);
+    
+                // Obtener el id del botón y construir el id de la caja correspondiente
+                const botonId = this.id;
+                const cajaId = 'caja' + botonId.slice(-1);
+                
+                // Obtener la caja desplegable correspondiente al botón
+                const cajaDesplegable = document.getElementById(cajaId);
+                
+                // Si la caja desplegable está visible, se oculta; de lo contrario, se muestra
+                if (cajaDesplegable.style.display === 'none' || cajaDesplegable.style.display === '') {
+                    cajaDesplegable.style.display = 'block'; // Mostrar la caja desplegable
+                    cerrarCajaAutomaticamente(cajaDesplegable); // Cerrar automáticamente después de 4 segundos
+                } else {
+                    cajaDesplegable.style.display = 'none'; // Ocultar la caja desplegable
+                }
+            });
+        });
+    </script>
+    
+    
+    
+    
+    
+{% endblock%} 

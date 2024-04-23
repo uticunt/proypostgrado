@@ -1,0 +1,154 @@
+{% extends "plantilla.html" %}
+{% block title %} POSGRADO | Agregar Postulantes  {% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    .card-header{
+        background-color: #2f5793;
+        color: white;
+    }
+
+    input[name="codigo"],[name="ap_paterno"], [name="ap_materno"], [name="nombres"],[name="email"],[name="dni"],[name="celular"],[name="pdf_curriculum"], [name="modalidad"], [name="doctorado"], [name="maestria"], [name="unidad"],[name="tipoPrograma"]
+    {
+        height: 30px;
+        font-size: 11px;
+    }
+</style>
+<div class="p-1">
+    <div class="card mx-5 my-4 ">
+        <div class="card-header">
+            <h4 class="card-title pt-2 pl-5" >NUEVO POSTULANTE</h4>        
+        </div>       
+        <div class="card-body">            
+            <form method="post" class="">
+                {% csrf_token %}
+                <div class="row pl-4">
+
+                    <!-- Datos Personales -->
+                    <div class="col-lg-6 col-md-6 col-sm-12">                        
+                        <h6 class="font-size-11 mb-3"><i class="fa-solid fa-chevron-right fa-sm" style="color: #233657"></i><b> Datos personales</b></h6>
+                        <div class="row ml-1">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-4 col-sm-4">{{ form.codigo | as_crispy_field }}</div>                        
+                            </div>        
+                            <div class="row">
+                                <div class="col-lg-5">{{ form.ap_paterno | as_crispy_field }}</div>     
+                                <div class="col-lg-5" >{{ form.ap_materno | as_crispy_field }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10">{{ form.nombres | as_crispy_field }}</div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-5">{{ form.dni | as_crispy_field }}</div>
+                                <div class="col-lg-5">{{ form.celular | as_crispy_field }}</div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-10">{{ form.email | as_crispy_field }}</div>   
+                            </div>   
+                        </div>                                           
+                    </div>
+
+                    <!-- Postulacion -->
+                    <div class="col-lg-6 col-md-6 col-sm-12">
+                        <h6 class="font-size-11 mb-3"><i class="fa-solid fa-chevron-right fa-sm" style="color: #28487c;"></i><b> Postulación</b></h6>
+                        <div class="row ml-1">
+                            <div class="row">                            
+                                <div class="col-lg-11">{{ form.pdf_curriculum | as_crispy_field }}</div>  
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3">
+                                    <label for="tipoPrograma">Programa</label>                                  
+                                    <select class="form-control form-control-sm" id="tipoPrograma" name="tipoPrograma">
+                                        <option value="">-------</option>  
+                                        <option value="doctorado">Doctorado</option>  
+                                        <option value="maestria">Maestria</option>                              
+                                    </select>
+                                </div>     
+                                <div class="col-lg-8" id="campoDoctorado" style="display: none;">{{ form.doctorado | as_crispy_field }}</div>
+                                <div class="col-lg-8" id="campoMaestria" style="display: none;">{{ form.maestria | as_crispy_field }}</div>                       
+                            </div>                                                                       
+                            <div class="row mt-2">                                         
+                                <div class="col-lg-11">{{ form.unidad | as_crispy_field }}</div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-11">{{ form.modalidad | as_crispy_field }}</div>    
+                            </div>
+                        </div>                        
+                        
+                        <div class="row mt-4 ml-1">
+                            <div class="col-lg-5"><button type="submit" class="btn" style="width: 100%; background-color: #28487c; font-size: 11px; color: white;">Guardar</button></div>
+                            <div class="col-lg-5"><a href="{% url 'listar_postulantes' %}" class="btn" style="width: 100%; background-color: rgb(231, 237, 247); font-size: 11px; color: black;">Cancelar</a></div>
+                        </div>                      
+                    </div>
+                </div>                           
+            </form>           
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block js %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                "title": "Warning",
+                "text":"{{m}}",
+                "icon":"info"
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+     
+    <script>
+        document.getElementById('tipoPrograma').addEventListener('change', function() {
+            var seleccion = this.value;
+            var campoDoctorado = document.getElementById('campoDoctorado');
+            var campoMaestria = document.getElementById('campoMaestria');
+    
+            // Ocultar ambos campos inicialmente
+            campoDoctorado.style.display = 'none';
+            campoMaestria.style.display = 'none';
+    
+            // Mostrar el campo correspondiente según la selección
+            if (seleccion === 'doctorado') {
+                campoDoctorado.style.display = 'block';
+            } else if (seleccion === 'maestria') {
+                campoMaestria.style.display = 'block';
+            }
+        });
+    </script>
+    
+         
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var tipoPrograma = document.getElementById('tipoPrograma'); // Obtiene el elemento select
+            var campoDoctorado = document.getElementById('campoDoctorado'); // Obtiene el div de doctorado
+            var campoMaestria = document.getElementById('campoMaestria'); // Obtiene el div de maestria
+            var selectDoctorado = document.getElementById('id_doctorado'); // Suponiendo que el select tenga un ID
+            var selectMaestria = document.getElementById('id_maestria'); // Suponiendo que el select tenga un ID
+
+            tipoPrograma.addEventListener('change', function() {
+                var seleccion = this.value;
+                if (seleccion === 'doctorado') {
+                    campoDoctorado.style.display = 'block';
+                    campoMaestria.style.display = 'none';
+                    selectMaestria.selectedIndex = 0; // Asume que el valor 'None' está en la primera posición
+                } else if (seleccion === 'maestria') {
+                    campoDoctorado.style.display = 'none';
+                    campoMaestria.style.display = 'block';
+                    selectDoctorado.selectedIndex = 0; // Asume que el valor 'None' está en la primera posición
+                }
+            });
+
+            // Disparar el cambio al cargar para configurar el estado inicial
+            tipoPrograma.dispatchEvent(new Event('change'));
+        });
+    </script>
+
+{% endblock %} 

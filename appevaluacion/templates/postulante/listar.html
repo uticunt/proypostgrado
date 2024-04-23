@@ -1,0 +1,244 @@
+{% extends "plantilla.html" %}
+{% block title %} POSGRADO | Postulantes {% endblock title %}
+
+{% block content %}
+<style>
+    .card-header{
+        background-color: #2f5793;
+        color: white;
+    }
+
+    thead{
+        background-color: #c8c8c8;
+    }
+
+</style>
+
+    <div class="p-2">
+        <div class="card mt-1">
+            <div class="card-header d-flex justify-content-between ">           
+                <h4 class="card-title pt-2 pl-5" >LISTADO DE POSTULANTES</h4>                          
+                {% if perms.appevaluacion.view_doctorado %}
+                <div class="ml-auto">
+                    <a href="{% url 'crear_postulante' %}" class='btn btn-sm' style="background-color:#e7edf7 ;">
+                        <i class='fas fa-plus'></i> NUEVO
+                    </a>
+                </div>  
+                {% endif %}          
+            </div>
+            <div class="card-body">           
+                <div class="row p-2"> 
+                    <!-- Busqueda  -->
+                    <div class="col-md-4 col-sm-6">
+                        <label for="">Busqueda:</label>
+                        <form action="." method="GET">
+                            <div class="input-group">
+                                <input type="text" name="buscar" id="buscar" class="form-control form-control-sm" autofocus placeholder="Buscar codigo" value="{{ buscar }}"><span class="input-group-btn">
+                                <button class="btn btn-secondary p-1 pl-2 pr-2"><i class="fa fa-search fa-xs"></i></button></span>                            
+                            </div>                        
+                        </form>
+                    </div>       
+                    <!-- Separación -->
+                    <div class="col-md-2 col-sm-6"></div>
+                    <!-- Unidades -->        
+                    <div class="col-md-4 col-sm-6">
+                        <label for="selectUnidad">Unidades:</label>                                  
+                        <select class="form-control form-control-sm" id="selectUnidad" name="unidad">
+                            <option value="Todos" {% if unidad_actual == 'Todos' %}selected{% endif %}>Todos</option>
+                            {% for unidad in unidades %}
+                                <option value="{{ unidad.idUnidad }}" {% if unidad.des_unidad == unidad_actual %}selected{% endif %}>{{ unidad.des_unidad }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Modalidad -->
+                    <div class="col-md-2 col-sm-6">
+                        <label for="selectModalidad">Modalidad:</label>                                  
+                        <select class="form-control form-control-sm" id="selectModalidad" name="modalidad">
+                            <option value="Todos" {% if modalidad_actual == 'Todos' %}selected{% endif %}>Todos</option>
+                            {% for modalidad in modalidades %}
+                                <option value="{{ modalidad.idModalidad }}" {% if modalidad.des_modalidad == modalidad_actual %}selected{% endif %}>{{ modalidad.des_modalidad }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>                
+                </div>            
+                <br>
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-sm" style="width:100%" id="tablaPostulantes">
+                            <thead class="table-light">
+                                <tr>                               
+                                    <th>Codigo</th>
+                                    <th>Nombres y apellidos</th>                        
+                                    <th>Dni</th>                                
+                                    <th>Celular</th>
+                                    <th>Mención</th> 
+                                    <th class="unidad">Unidad</th> 
+                                    <th class="modalidad">Modalidad</th>                                
+                                    <th><center>Opciones</center></th>
+                                </tr>
+                            </thead>
+                            {% if page_obj %}
+                            {% for item_postulante in page_obj %}
+                            <tr>                            
+                                <td>{{ item_postulante.codigo }}</td>                    
+                                <td>{{ item_postulante.nombres }} {{ item_postulante.ap_paterno }} {{ item_postulante.ap_materno }}</td>
+                                <td>{{ item_postulante.dni }}</td>                                
+                                <td>{{ item_postulante.celular }}</td>
+                                {% if item_postulante.doctorado != none %}
+                                    <td>{{ item_postulante.doctorado }}</td>
+                                {% else %}
+                                    <td>{{ item_postulante.maestria }}</td>
+                                {% endif %}
+                                <td class="unidad">{{ item_postulante.unidad }}</td>
+                                <td class="modalidad">{{ item_postulante.modalidad }}</td>
+                                <td style="text-align: center;">
+                                    <a href="{% url 'actualizar_postulante' item_postulante.idPostulante %}" class="btn btn-sm" style="background-color: #4273b5;"><i class="fa fa-edit" style="color: white;"></i></a> 
+                                    <a href="#" onclick="" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>                      
+                                </td>                    
+                            </tr>
+                            {% endfor %}                 
+                            {% else %}                
+                            <tr style="text-align: center;">
+                                <td colspan="8">
+                                    <p>No hay Registros</p>
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                </div>                                    
+            </div>       
+            <!-- Paginación y Conteo -->
+            <div class="card-footer">                  
+                <div class="row">
+                    <div class="col-lg-3 col-md-8 col-sm-6">
+                        <div class="d-flex justify-content-start pt-1">
+                            <label for="" class="p-2">CONTEO: </label>
+                            <input type="text" class="form-control form-control-sm" value="{{conteo}}" readonly>
+                            <label for="" class="p-2">Postulantes</label>
+                        </div> 
+                    </div>  
+                    <div class="col-lg-6 col-md-6 col-sm-6"></div>
+                    <div class="col-lg-3 col-md-8 col-sm-6">
+                        <div class="d-flex justify-content-end pt-1">
+                            <nav aria-label="pagination-django">
+                                <ul class="pagination">
+                                    {% if page_obj.has_previous %}                    
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page=1&unidad={{ request.GET.unidad }}&modalidad={{ request.GET.modalidad }}">Primera</a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}&unidad={{ request.GET.unidad }}&modalidad={{ request.GET.modalidad }}"><<</a>
+                                        </li>                        
+                                    {% endif %}
+                                    <li class="page-item"><a class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
+                                    {% if page_obj.has_next %}                       
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.next_page_number }}&unidad={{ request.GET.unidad }}&modalidad={{ request.GET.modalidad }}">>></a>
+                                        </li>
+                                        <li class="page-item">
+                                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&unidad={{ request.GET.unidad }}&modalidad={{ request.GET.modalidad }}">Última</a>
+                                        </li>
+                                    {% endif %}
+                                </ul>
+                            </nav>
+                        </div>
+
+
+
+                    </div>
+                
+                    
+                
+                </div>
+                
+                                       
+
+                
+            </div>             
+            <!--  -->           
+        </div>    
+    </div>
+ 
+{% endblock content %}
+
+{% block js %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   
+    {% if messages %}
+    {% for m in messages %}
+        <script>
+            Swal.fire({
+            "title": "Éxito",
+            "text":"{{m}}",
+            "icon":"success"
+            })
+            console.log("{{m}}")
+        </script>
+    {% endfor %}
+    {% endif %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function eliminarevaluacion(id){
+            Swal.fire({ "title":"¿Realmente desea eliminar Registro?",
+            "text":"Código :"+ id ,
+            "showCancelButton":true,
+            "cancelButtonText":"No",
+            "confirmButtonText":"Si",
+            "reverseButton":true,
+            "confirmButtonColor":"#dc3545"
+            }).then(function(result){ if(result.isConfirmed){
+                window.location.replace(window.location.origin+"/evaluacion/delete/"+id+"/") }
+        });
+        }       
+    </script>
+
+
+    <script>
+        // Función para obtener los parámetros de la URL
+        function obtenerParametroURL(parametro) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(parametro);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Restablece el valor de los selectores según los parámetros de la URL
+            const selectedUnidad = obtenerParametroURL('unidad');
+            const selectedModalidad = obtenerParametroURL('modalidad');
+            // const estadoEvaluacion = obtenerParametroURL('estado_evaluacion');
+            const queryset = obtenerParametroURL('buscar');
+
+            // Configura los valores seleccionados en los selectores de unidad y modalidad
+            const selectUnidad = document.getElementById('selectUnidad');
+            if (selectedUnidad) {
+                selectUnidad.value = selectedUnidad;
+            }
+
+            const selectModalidad = document.getElementById('selectModalidad');
+            if (selectedModalidad) {
+                selectModalidad.value = selectedModalidad;
+            }
+
+            // Evento de cambio en el selector de unidad
+            selectUnidad.addEventListener('change', function() {
+                const unidadValue = selectUnidad.value;
+                const modalidadValue = selectModalidad.value;
+
+                // Generar la URL con los parámetros de unidad, modalidad, estado_evaluacion y buscar
+                const newUrl = `?unidad=${unidadValue}&modalidad=${modalidadValue}&buscar=${queryset || ''}`;
+                window.location.href = newUrl;
+            });
+
+            // Evento de cambio en el selector de modalidad
+            selectModalidad.addEventListener('change', function() {
+                const modalidadValue = selectModalidad.value;
+                const unidadValue = selectUnidad.value;
+
+                // Generar la URL con los parámetros de modalidad, unidad, estado_evaluacion y buscar
+                const newUrl = `?unidad=${unidadValue}&modalidad=${modalidadValue}&buscar=${queryset || ''}`;
+                window.location.href = newUrl;
+            });
+        });
+    </script>          
+{% endblock js %} 
