@@ -65,13 +65,13 @@
                                 </tr>
                             </thead>
                             {% if page_obj %}
-                            {% for item_usuario, item_contraseña in usuarios_contraseñas %}
+                            {% for item_usuario in page_obj %}
                             <tr>                            
                                 <td>{{ item_usuario.id }}</td>                    
                                 <td>{{ item_usuario.first_name }} {{ item_usuario.last_name }}</td>
                                 <td>{{ item_usuario.is_active }}</td>                                
                                 <td>{{ item_usuario.username }}</td>
-                                <td>{{ item_contraseña }}</td>
+                                <td>{{ item_usuario.password }}</td>
                                 <td style="text-align: center;">
                                     <a href="#" class="btn btn-sm" style="background-color: #4273b5;"><i class="fa fa-edit" style="color: white;"></i></a> 
                                     <a href="#" onclick="" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>                      
