@@ -29,6 +29,9 @@ urlpatterns = [
     path('home/', home, name='home'),
     path('logout/',salir ,name="logout"),
 
+    # Usuarios
+    path('usuarios/',include('appseguridad.routes.usuario'),name="usuarios"),
+
     # Evaluaciones
     path('evaluacion/',include('appevaluacion.routes.evaluacion'),name="evaluacion"),
     path('filtrar/', evaluacion.filtrar_postulantes_evaluadores, name='filtrar_postulantes_evaluadores'),
