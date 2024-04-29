@@ -1,0 +1,71 @@
+{% extends "plantilla.html" %}
+{% block title %} POSGRADO | Agregar Usuarios  {% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    .card-header{
+        background-color: #2f5793;
+        color: white;
+    }
+
+    input[name="codigo"],[name="ap_paterno"], [name="ap_materno"], [name="nombres"],[name="email"],[name="dni"],[name="celular"],[name="pdf_curriculum"], [name="modalidad"], [name="doctorado"], [name="maestria"], [name="unidad"],[name="tipoPrograma"]
+    {
+        height: 30px;
+        font-size: 11px;
+    }
+</style>
+<div class="p-1">
+    <div class="card mx-5 my-4 ">
+        <div class="card-header">
+            <h4 class="card-title pt-2 pl-5" >NUEVO USUARIO</h4>        
+        </div>       
+        <div class="card-body">            
+            <form method="post" class="">
+                {% csrf_token %}
+                <div class="row p-4">           
+                    <!-- Usuarios -->
+                    <div class="col-lg-12">
+                        <div class="row ml-1">
+                            <div class="row">                            
+                                <div class="col-lg-6">{{ form.username | as_crispy_field }}</div>  
+                            </div>                                                                                                
+                            <div class="row">                                         
+                                <div class="col-lg-6">{{ form.password | as_crispy_field }}</div> 
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-6">{{ form.email | as_crispy_field }}</div>    
+                            </div>
+                        </div>                        
+                        
+                        <div class="row mt-4 ml-1">
+                            <div class="col-lg-5"><button type="submit" class="btn" style="width: 100%; background-color: #28487c; font-size: 11px; color: white;">Guardar</button></div>
+                            <div class="col-lg-5"><a href="{% url 'listar_usuarios' %}" class="btn" style="width: 100%; background-color: rgb(231, 237, 247); font-size: 11px; color: black;">Cancelar</a></div>
+                        </div>                      
+                    </div>
+                </div>                           
+            </form>           
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block js %}
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                "title": "Warning",
+                "text":"{{m}}",
+                "icon":"info"
+                })
+            </script>
+        {% endfor %}
+    {% endif %}
+     
+  
+{% endblock %} 

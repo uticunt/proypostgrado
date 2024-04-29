@@ -20,7 +20,7 @@
                 <h4 class="card-title pt-2 pl-5" >LISTADO DE USUARIOS</h4>                          
                 {% if perms.appevaluacion.view_doctorado %}
                 <div class="ml-auto">
-                    <a href="#" class='btn btn-sm' style="background-color:#e7edf7 ;">
+                    <a href="{% url 'creacion_usuario' %}" class='btn btn-sm' style="background-color:#e7edf7 ;">
                         <i class='fas fa-plus'></i> NUEVO
                     </a>
                 </div>  
