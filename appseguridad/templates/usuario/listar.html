@@ -58,6 +58,10 @@
         transform: translateX(18px);
     }
 
+    .filtrado {
+        display: none;
+}
+
 </style>
 <!--  -->
 
@@ -252,20 +256,31 @@
     <!-- Busqueda -->
     <script>
         $(document).ready(function() {
-            $('#inputSearch').on('keyup', function() {
-                var searchText = $(this).val().toLowerCase();
+            // Función para filtrar las filas de la tabla
+            function filtrarTabla(searchText) {
                 $('#tablaPostulantes tbody tr').each(function() {
                     var username = $(this).find('td:nth-child(3)').text().toLowerCase();
                     var fullName = $(this).find('td:nth-child(2)').text().toLowerCase();
                     if (username.includes(searchText) || fullName.includes(searchText)) {
-                        $(this).show();
+                        $(this).removeClass('filtrado'); // Eliminar la clase de filtrado
                     } else {
-                        $(this).hide();
+                        $(this).addClass('filtrado'); // Agregar la clase de filtrado
                     }
                 });
+            }
+    
+            // Evento para realizar la búsqueda al escribir en el campo de búsqueda
+            $('#inputSearch').on('keyup', function() {
+                var searchText = $(this).val().toLowerCase();
+                filtrarTabla(searchText);
             });
+    
+            // Aplicar búsqueda inicialmente
+            $('#inputSearch').trigger('keyup');
         });
     </script>
+    
+    
     
     
 
