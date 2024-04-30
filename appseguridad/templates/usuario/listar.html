@@ -76,15 +76,10 @@
             <div class="card-body">           
                 <div class="row p-2">                     
                     <!-- Busqueda  -->
-                    <div class="col-md-4 col-sm-6">
-                        <label for="">Busqueda:</label>
-                        <form action="." method="GET">
-                            <div class="input-group">
-                                <input type="text" name="buscar" id="buscar" class="form-control form-control-sm" autofocus placeholder="Buscar username" value="{{ buscar }}"><span class="input-group-btn">
-                                <button class="btn btn-secondary p-1 pl-2 pr-2"><i class="fa fa-search fa-xs"></i></button></span>                            
-                            </div>                        
-                        </form>
-                    </div>       
+                    <div class="col-md-4">
+                        <label for="">Busqueda:</label>   
+                        <input type="text" class="form-control form-control-sm" id="inputSearch" placeholder="Buscar...">
+                    </div>                    
                     <!-- Separación -->
                     <div class="col-md-6 col-sm-6"></div>
                     <!-- Estados -->        
@@ -253,6 +248,25 @@
             });           
         });
     </script>
+
+    <!-- Busqueda -->
+    <script>
+        $(document).ready(function() {
+            $('#inputSearch').on('keyup', function() {
+                var searchText = $(this).val().toLowerCase();
+                $('#tablaPostulantes tbody tr').each(function() {
+                    var username = $(this).find('td:nth-child(3)').text().toLowerCase();
+                    var fullName = $(this).find('td:nth-child(2)').text().toLowerCase();
+                    if (username.includes(searchText) || fullName.includes(searchText)) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
+    
     
 
 
