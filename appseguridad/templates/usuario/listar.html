@@ -256,15 +256,33 @@
     <!-- Busqueda -->
     <script>
         $(document).ready(function() {
+            // Almacenar todos los datos de la tabla en una variable
+            var tablaData = [];
+            $('#tablaPostulantes tbody tr').each(function() {
+                var rowData = {
+                    id: $(this).find('td:nth-child(1)').text().toLowerCase(),
+                    nombresApellidos: $(this).find('td:nth-child(2)').text().toLowerCase(),
+                    username: $(this).find('td:nth-child(3)').text().toLowerCase(),
+                    password: $(this).find('td:nth-child(4)').text().toLowerCase(),
+                    estado: $(this).find('td:nth-child(5)').text().toLowerCase()
+                };
+                tablaData.push(rowData);
+            });
+    
             // Función para filtrar las filas de la tabla
             function filtrarTabla(searchText) {
-                $('#tablaPostulantes tbody tr').each(function() {
-                    var username = $(this).find('td:nth-child(3)').text().toLowerCase();
-                    var fullName = $(this).find('td:nth-child(2)').text().toLowerCase();
-                    if (username.includes(searchText) || fullName.includes(searchText)) {
-                        $(this).removeClass('filtrado'); // Eliminar la clase de filtrado
+                $('#tablaPostulantes tbody tr').each(function(index) {
+                    var rowData = tablaData[index];
+                    if (
+                        rowData.id.includes(searchText) ||
+                        rowData.nombresApellidos.includes(searchText) ||
+                        rowData.username.includes(searchText) ||
+                        rowData.password.includes(searchText) ||
+                        rowData.estado.includes(searchText)
+                    ) {
+                        $(this).show();
                     } else {
-                        $(this).addClass('filtrado'); // Agregar la clase de filtrado
+                        $(this).hide();
                     }
                 });
             }
@@ -274,9 +292,6 @@
                 var searchText = $(this).val().toLowerCase();
                 filtrarTabla(searchText);
             });
-    
-            // Aplicar búsqueda inicialmente
-            $('#inputSearch').trigger('keyup');
         });
     </script>
     
