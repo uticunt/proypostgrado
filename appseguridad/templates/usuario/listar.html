@@ -2,6 +2,7 @@
 {% block title %} POSGRADO | Usuarios {% endblock title %}
 
 {% block content %}
+<!-- Estilos -->
 <style>
     .card-header{
         background-color: #2f5793;
@@ -12,7 +13,53 @@
         background-color: #c8c8c8;
     }
 
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 42px;
+        height: 25px;
+    }
+
+    .switch input { 
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #bab1b1;
+        transition: .4s;
+        border-radius: 34px;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 18px;
+        width: 18px;
+        left: 2px;
+        bottom: 4px;
+        background-color: white;
+        transition: .4s;
+        border-radius: 50%;
+    }
+
+    input:checked + .slider {
+        background-color: #2f5793;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(18px);
+    }
+
 </style>
+<!--  -->
 
     <div class="p-2">
         <div class="card mt-1">
@@ -27,7 +74,7 @@
                 {% endif %}          
             </div>
             <div class="card-body">           
-                <div class="row p-2"> 
+                <div class="row p-2">                     
                     <!-- Busqueda  -->
                     <div class="col-md-4 col-sm-6">
                         <label for="">Busqueda:</label>
@@ -39,28 +86,29 @@
                         </form>
                     </div>       
                     <!-- Separación -->
-                    <div class="col-md-5 col-sm-6"></div>
-                    <!-- Unidades -->        
-                    <div class="col-md-3 col-sm-6">
-                        <label for="">Estado:</label>                                  
-                        <select class="form-control form-control-sm" id="" name="">
-                            <option value="Todos">Todos</option>
-                            <option value="Activos">Activos</option>
-                            <option value="No Activos">No Activos</option>                           
+                    <div class="col-md-6 col-sm-6"></div>
+                    <!-- Estados -->        
+                    <div class="col-md-2 col-sm-6">
+                        <label for="selectStatusUSer">Estado:</label>                                  
+                        <select class="form-control form-control-sm" id="selectStatusUSer" name="estado">
+                            <option value="todos" {% if filtro_status == "todos" %}selected{% endif %} >Todos</option>
+                            <option value="activo" {% if filtro_status == "activo" %}selected{% endif %} >Activos</option>
+                            <option value="inactivo" {% if filtro_status == "inactivo" %}selected{% endif %}>Inactivos</option>                           
                         </select>
                     </div>                             
                 </div>            
                 <br>
+                <!-- Listado -->
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="table-responsive">
                         <table class="table table-striped table-sm" style="width:100%" id="tablaPostulantes">
                             <thead class="table-light">
                                 <tr>                               
                                     <th>id</th>
-                                    <th>Nombres y apellidos</th>                        
-                                    <th>Estado</th>                                
+                                    <th>Nombres y apellidos</th>                         
                                     <th>Username</th>
-                                    <th>Password</th>                                                                    
+                                    <th>Password</th>                                  
+                                    <th>Estado</th>                                  
                                     <th><center>Opciones</center></th>
                                 </tr>
                             </thead>
@@ -68,10 +116,15 @@
                             {% for item_usuario in page_obj %}
                             <tr>                            
                                 <td>{{ item_usuario.id }}</td>                    
-                                <td>{{ item_usuario.first_name }} {{ item_usuario.last_name }}</td>
-                                <td>{{ item_usuario.is_active }}</td>                                
-                                <td>{{ item_usuario.username }}</td>
+                                <td>{{ item_usuario.first_name }} {{ item_usuario.last_name }}</td>                                                           
+                                <td>{{ item_usuario.username }}</td> 
                                 <td>{{ item_usuario.password }}</td>
+                                <td>    
+                                    <label class="switch">
+                                        <input type="checkbox" class="status-toggle" data-user-id="{{ item_usuario.id }}" {% if item_usuario.is_active %} checked {% endif %}>
+                                        <span class="slider round"></span>
+                                    </label>
+                                </td>  
                                 <td style="text-align: center;">
                                     <a href="#" class="btn btn-sm" style="background-color: #4273b5;"><i class="fa fa-edit" style="color: white;"></i></a> 
                                     <a href="#" onclick="" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a>                      
@@ -106,36 +159,26 @@
                                 <ul class="pagination">
                                     {% if page_obj.has_previous %}                    
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=1">Primera</a>
+                                            <a class="page-link" href="?page=1&estado={{ request.GET.estado }}">Primera</a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}"><<</a>
+                                            <a class="page-link" href="?page={{ page_obj.previous_page_number }}&estado={{ request.GET.estado }}"><<</a>
                                         </li>                        
                                     {% endif %}
                                     <li class="page-item"><a class="page-link">Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</a></li>
                                     {% if page_obj.has_next %}                       
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ page_obj.next_page_number }}">>></a>
+                                            <a class="page-link" href="?page={{ page_obj.next_page_number }}&estado={{ request.GET.estado }}">>></a>
                                         </li>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">Última</a>
+                                            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&estado={{ request.GET.estado }}">Última</a>
                                         </li>
                                     {% endif %}
                                 </ul>
                             </nav>
                         </div>
-
-
-
-                    </div>
-                
-                    
-                
-                </div>
-                
-                                       
-
-                
+                    </div>                                                
+                </div>                
             </div>             
             <!--  -->           
         </div>    
@@ -146,34 +189,71 @@
 {% block js %}
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
    
+    <!-- Mensaje de exito -->
     {% if messages %}
-    {% for m in messages %}
-        <script>
-            Swal.fire({
-            "title": "Éxito",
-            "text":"{{m}}",
-            "icon":"success"
-            })
-            console.log("{{m}}")
-        </script>
-    {% endfor %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                "title": "Éxito",
+                "text":"{{m}}",
+                "icon":"success"
+                })
+                console.log("{{m}}")
+            </script>
+        {% endfor %}
     {% endif %}
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  
+    <!-- Activar/Desactivar Estado -->
     <script>
-        function eliminarevaluacion(id){
-            Swal.fire({ "title":"¿Realmente desea eliminar Registro?",
-            "text":"Código :"+ id ,
-            "showCancelButton":true,
-            "cancelButtonText":"No",
-            "confirmButtonText":"Si",
-            "reverseButton":true,
-            "confirmButtonColor":"#dc3545"
-            }).then(function(result){ if(result.isConfirmed){
-                window.location.replace(window.location.origin+"/evaluacion/delete/"+id+"/") }
+       $(document).ready(function(){
+            $('body').on('change', '.status-toggle', function(){
+                var user_id = $(this).data('user-id');  
+                var is_active = $(this).is(':checked'); 
+
+                $.ajax({
+                    url: '/update-status-user/',
+                    method: 'POST',
+                    data: {
+                        'user_id': user_id,
+                        'is_active': is_active,
+                        'csrfmiddlewaretoken': $('input[name="csrfmiddlewaretoken"]').val()
+                    },                  
+                    error: function(response) {
+                        alert('Error al cambiar el estado.');
+                    }
+                });
+            });
         });
-        }       
     </script>
+            
+    <!-- Filtrando por estado -->
+    <script>
+        // Función para obtener los parámetros de la URL
+        function obtenerParametroURL(parametro) {
+            const params = new URLSearchParams(window.location.search);
+            return params.get(parametro);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectedEstado = obtenerParametroURL('estado');          
+
+            // Configura los valores seleccionados en los selectores de unidad y modalidad
+            const selectEstado = document.getElementById('selectStatusUSer');
+            if (selectedEstado) {
+                selectEstado.value = selectedEstado;
+            }
+           
+            // Evento de cambio en el selector de unidad
+            selectEstado.addEventListener('change', function() {
+                const estadoValue = selectEstado.value;               
+
+                // Generar la URL con los parámetros de unidad, modalidad, estado_evaluacion y buscar
+                const newUrl = `?estado=${estadoValue}`;
+                window.location.href = newUrl;
+            });           
+        });
+    </script>
+    
 
 
           

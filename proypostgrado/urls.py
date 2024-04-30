@@ -20,6 +20,7 @@ from rest_framework.documentation import include_docs_urls
 from appseguridad.views.views import home, acceder, salir
 
 from appevaluacion.views import evaluacion,evaluador
+from appseguridad.views import usuario
 
 urlpatterns = [
     #Borrar
@@ -31,6 +32,8 @@ urlpatterns = [
 
     # Usuarios
     path('usuarios/',include('appseguridad.routes.usuario'),name="usuarios"),
+    path('update-status-user/',usuario.update_user_status,name="update-status-user"),
+
 
     # Evaluaciones
     path('evaluacion/',include('appevaluacion.routes.evaluacion'),name="evaluacion"),

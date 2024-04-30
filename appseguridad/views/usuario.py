@@ -13,21 +13,46 @@ from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import is_password_usable
 from django.conf import settings
 from appseguridad.forms import UserForm
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
 
 @login_required(login_url='login')
 def listar_usuarios(request):   
-    queryset = request.GET.get("buscar")
-    datos = User.objects.all()    
+
+    #Filtro estado
+    filtro_status = request.GET.get("estado", "todos")
+    if filtro_status == "activo":
+        datos = User.objects.filter(is_active=True)
+    elif filtro_status == "inactivo":
+        datos = User.objects.filter(is_active=False)
+    else:
+        datos = User.objects.all()
+ 
     # Conteo
     conteo = datos.count()   
 
     datos = datos.order_by('id')    
     paginator = Paginator(datos, 10)  
     page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number) 
-    
+    page_obj = paginator.get_page(page_number)     
 
     return render(request, 'usuario/listar.html', {'page_obj': page_obj, 'conteo': conteo})
+
+
+# Actualiza estado del Usuario
+@csrf_exempt
+def update_user_status(request):
+    user_id = request.POST.get('user_id')
+    is_active = request.POST.get('is_active') == 'true'  
+    try:
+        user = User.objects.get(id=user_id)
+        user.is_active = is_active
+        user.save()
+        return JsonResponse({'status': 'success'})
+    except User.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404)
+
 
 
 @login_required(login_url='login')
