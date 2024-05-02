@@ -21,7 +21,7 @@ from django.http.response import HttpResponse
 from openpyxl.styles import Font, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
 
-#Listar usuarios
+#---------------------------------------------Listar usuarios---------------------------------------------
 @login_required(login_url='login')
 def listar_usuarios(request):
     return render(request, 'usuario/listar.html')
@@ -117,6 +117,9 @@ def descargar_excel_usuarios(request):
     # Guardar el libro de trabajo en la respuesta
     wb.save(response)
     return response
+
+#-----------------------------------------------------------------------------------------
+
 
 @login_required(login_url='login')
 def creacion_usuario(request):
