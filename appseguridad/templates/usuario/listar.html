@@ -90,16 +90,16 @@
                         </select>
                     </div> 
                     <div class="col-md-2 col-sm-6 mt-4" >                         
-                        <a href="{% url 'descargar_excel_usuarios' %}" class="btn btn-sm" style="background-color: #287b4e; color: #fff"><i class="fa-solid fa-file-csv" style="color: #fff;"></i> Exportar excel</a> 
+                        <a href="{% url 'descargar_excel_usuarios' %}" class="btn btn-success btn-sm" style="color: #fff">Excel <i class="fa-solid fa-file-csv" style="color: #fff;"></i></a> 
                     </div>                                                                                            
                 </div>           
                 <!-- Listado -->
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="table-responsive">
-                        <table class="table table-sm my-3" style="width: 100%;" id="tablausuarios">
+                        <table class="table table-sm table-striped my-3" style="width: 100%;" id="tablausuarios">
                             <thead class="table-light">
                                 <tr>                               
-                                    <th>Id</th>
+                                    <th >Id</th>
                                     <th>Nombres</th>                         
                                     <th>Username</th>
                                     <th>Password</th>                                  
@@ -212,9 +212,7 @@
         });
 
     </script>
-        
-
-  
+          
     <!-- Activar/Desactivar Estado -->
     <script>
        $(document).ready(function(){
