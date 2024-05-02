@@ -177,7 +177,7 @@
 
         const listaUsuarios = async (estado) => {
             try {
-                const response = await fetch("http://127.0.0.1:8000/usuarios/listar_usuarios_json?estado=" + estado);
+                const response = await fetch("/usuarios/listar_usuarios_json?estado=" + estado);
                 const data = await response.json();
                 let content = ``;
                 data.usuarios.forEach((item_usuario) => {
