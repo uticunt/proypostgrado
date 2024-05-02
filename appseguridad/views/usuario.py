@@ -54,16 +54,19 @@ def update_user_status(request):
 
 #---------------------------------------------------------------------------------------------------------
 
-
+#------------------------------------------Crer USuario --------------------------------------------------
 @login_required(login_url='login')
 def creacion_usuario(request):
     if request.method == 'POST':
         form = UserForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            # Si necesitas hacer algo más con el usuario antes de guardarlo, puedes hacerlo aquí
-            user.save()
-            return redirect('listar_usuarios')  # Redirige a la página del perfil del usuario, cambia esto según tu aplicación
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Usuario {username} creado exitosamente.')
+            return redirect('listar_usuarios')
     else:
         form = UserForm()
     return render(request, 'usuario/agregar.html', {'form': form})
+
+
+#---------------------------------------------------------------------------------------------------------
