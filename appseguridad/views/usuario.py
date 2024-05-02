@@ -16,29 +16,25 @@ from appseguridad.forms import UserForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
+from openpyxl import Workbook
+from django.http.response import HttpResponse
+
+#Listar usuarios
+@login_required(login_url='login')
+def listar_usuarios(request):
+    return render(request, 'usuario/listar.html')
 
 @login_required(login_url='login')
-def listar_usuarios(request):   
-
-    #Filtro estado
-    filtro_status = request.GET.get("estado", "todos")
+def listar_usuarios_json(request):    
+    filtro_status = request.GET.get('estado')
     if filtro_status == "activo":
-        datos = User.objects.filter(is_active=True)
+        usuarios = list(User.objects.filter(is_active=True).values())
     elif filtro_status == "inactivo":
-        datos = User.objects.filter(is_active=False)
+        usuarios = list(User.objects.filter(is_active=False).values())
     else:
-        datos = User.objects.all()
- 
-    # Conteo
-    conteo = datos.count()   
-
-    datos = datos.order_by('id')    
-    paginator = Paginator(datos, 10)  
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)     
-
-    return render(request, 'usuario/listar.html', {'page_obj': page_obj, 'conteo': conteo})
-
+        usuarios = list(User.objects.values())
+    data = {'usuarios':usuarios}
+    return JsonResponse(data)
 
 # Actualiza estado del Usuario
 @csrf_exempt
@@ -68,3 +64,39 @@ def creacion_usuario(request):
         form = UserForm()
     return render(request, 'usuario/agregar.html', {'form': form})
 
+
+
+
+@login_required
+def descargar_excel_usuarios(request):
+    # Crear un libro de trabajo
+    wb = Workbook()
+    ws = wb.active
+    ws.title = "Credenciales de Usuarios"
+
+    # Encabezados del archivo Excel
+    columns = ['ID', 'Nombre y Apellidos', 'Username', 'Password']
+    ws.append(columns)
+
+    # Obtener datos de usuarios
+    users = User.objects.all()
+    for user in users:
+        password_desencriptada = make_password(user.password)
+        # La contraseña se muestra como está en la base de datos (HASH)
+        row = [
+            user.id,
+            f"{user.first_name} {user.last_name}",
+            user.username,
+            password_desencriptada 
+        ]
+        ws.append(row)
+
+    # Establecer el nombre del archivo
+    #response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',)
+    response = HttpResponse(content_type='application/ms-excel')
+    response['Content-Disposition'] = 'attachment; filename=credenciales_usuarios.xlsx'
+
+    # Guardar el libro de trabajo en la respuesta
+    wb.save(response)
+
+    return response

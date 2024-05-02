@@ -18,6 +18,21 @@
     <link rel="stylesheet" href="{% static '/adminlte/dist/css/adminlte.min.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+    <!-- Datatables.js -->
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.5/js/dataTables.bootstrap4.js"></script>
+    <!-- Script de DataTables en español -->
+    <script src="https://cdn.datatables.net/plug-ins/1.11.5/i18n/Spanish.json"></script>
+    
+    <!-- Estilos Datatables.js -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.5/css/dataTables.bootstrap4.css">
+        
+
     {% block css %} {% endblock %}
     <style>
       :root {
@@ -232,7 +247,7 @@
   <!-- /.content-wrapper -->
   <footer class="main-footer">
     <div class="float-center d-none d-sm-block">
-     <b>Escuela de Postgrado</b>| Universidad Nacional de Trujillo
+     <b>Escuela de Posgrado</b>| Universidad Nacional de Trujillo
     </div>
   </footer>
 
@@ -243,11 +258,9 @@
   </aside>
   <!-- /.control-sidebar -->
 </div>
-  <!--- jQuery -->
-  {% comment %} <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script> {% endcomment %}
 
-  <script src="{% static '/adminlte/plugins/jquery/jquery.min.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <!--  <script src="{% static '/adminlte/plugins/jquery/jquery.min.js' %}"></script>
+ -->  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
   <script src="{% static '/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}">  </script>
   <!-- AdminLTE App -->
   <script src="{% static '/adminlte/dist/js/adminlte.min.js' %}"></script>
@@ -255,16 +268,7 @@
   <script src="{% static '/adminlte/dist/js/demo.js' %}"></script>
 
 
- <!--  <script>
-    {% if userNameLogged %}    
-        localStorage.setItem('userNameLogged', "{{userNameLogged}}");
-    {% endif %}
-    {% if userLogged %}    
-        localStorage.setItem('userLogged', "{{userLogged}}");
-    {% endif %}
-    let user_name = localStorage.getItem('userNameLogged');
-    document.getElementById('UserLogged-info').innerHTML = user_name;
-</script> -->
+
 {% block js %}
 {% endblock %}
 </body>
