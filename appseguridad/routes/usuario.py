@@ -7,6 +7,6 @@ urlpatterns = [
     
     path('create/',usuario.creacion_usuario ,name="creacion_usuario"),
 
-    path('reporte_credenciales/',usuario.descargar_excel_usuarios,name="descargar_excel_usuarios"),
+    #path('reporte_credenciales/',usuario.descargar_excel_usuarios,name="descargar_excel_usuarios"),
    
 ]
