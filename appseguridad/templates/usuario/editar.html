@@ -1,5 +1,5 @@
 {% extends "plantilla.html" %}
-{% block title %} POSGRADO | Agregar Usuarios  {% endblock title %}
+{% block title %} POSGRADO | Editar Usuarios  {% endblock title %}
 
 {% load crispy_forms_tags %}
 
@@ -20,7 +20,7 @@
 <div class="p-1">
     <div class="card mx-5 my-4 ">
         <div class="card-header">
-            <h4 class="card-title" style="font-size: 15px;" >NUEVO USUARIO</h4>        
+            <h4 class="card-title" style="font-size: 15px;" >EDITAR USUARIO</h4>        
         </div>       
         <div class="card-body">            
             <form method="post" class="">
@@ -29,10 +29,7 @@
                     <!-- Usuarios -->
                     <div class="col-lg-12">
                         <div class="row">
-                            <div class="col-lg-6">{{ form.username | as_crispy_field }}</div>
-                            
-                            <div class="col-lg-6">{{ form.password | as_crispy_field }}</div>     
-                                                                                
+                            <div class="col-lg-6">{{ form.username | as_crispy_field }}</div>                                                                                                          
                         </div>    
                         <div class="row">
                             <div class="col-lg-6">{{ form.first_name | as_crispy_field }}</div>
@@ -68,9 +65,7 @@
                 })
             </script>
         {% endfor %}
-    {% endif %}
-     
-  
+    {% endif %}      
 
     <!-- Ocultar la contraseña -->    
     <script>
@@ -99,26 +94,6 @@
 
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const passwordField = document.querySelector('#id_password');
-            let password = generarPassword();
-            passwordField.value = password;
-
-            // Función para generar contraseña
-            function generarPassword() {
-                const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-                let contraseña = '';
-                for (let i = 0; i < 8; i++) {
-                    contraseña += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
-                }
-                return contraseña;
-            }
-
-        })
-
-       
-    </script>
 
   
 {% endblock %} 

@@ -185,6 +185,7 @@
                 let content = ``;
                 data.usuarios.forEach((item_usuario) => {
                     const isActive = item_usuario.is_active ? 'checked' : '';
+                    const editUrl = `/usuarios/edit/${item_usuario.id}/`;
                     content += `
                         <tr>                            
                             <td>${item_usuario.id}</td>                    
@@ -198,7 +199,7 @@
                                 </label>
                             </td>
                             <td>
-                                <button class='btn btn-sm' style="background-color: #4273b5;"><i class='fa-solid fa-edit' style="color: white;"></i></button>
+                                <a href="${editUrl}" class="btn btn-sm" style="background-color: #4273b5; color: white;"><i class='fa fa-edit'></i></a>
                                 <button class='btn btn-sm btn-danger'><i class='fa-solid fa-trash-can'></i></button>
                             </td>
                         </tr>`

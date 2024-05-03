@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Div
 from django.contrib.auth.forms import UserCreationForm
 
-class UserForm(forms.ModelForm):
+class CrearUserForm(forms.ModelForm):
     username = forms.CharField(label='Username')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
     first_name = forms.CharField(label='Nombres (opcional)', required=False)
@@ -16,7 +16,7 @@ class UserForm(forms.ModelForm):
         fields = ['username', 'email', 'password', 'first_name', 'last_name']
 
     def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
+        super(CrearUserForm, self).__init__(*args, **kwargs)
         self.fields['username'].required = True
         self.fields['password'].required = True
 
@@ -26,6 +26,12 @@ class UserForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+    
+class EditarUserForm(forms.ModelForm):    
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+       
         
 class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
