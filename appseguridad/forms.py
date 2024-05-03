@@ -13,7 +13,11 @@ class CrearUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'password', 'first_name', 'last_name']
+        fields = ['username', 'email', 'password', 'first_name', 'last_name', 'is_superuser', 'is_active']
+        help_texts = {
+            'is_active': ('Indica si este usuario debe ser tratado como activo. Desactive esto en lugar de eliminar cuentas.'),
+            'is_superuser': ('Designa que este usuario tiene todos los permisos sin asignarlos explícitamente.'),
+        }
 
     def __init__(self, *args, **kwargs):
         super(CrearUserForm, self).__init__(*args, **kwargs)
@@ -30,9 +34,12 @@ class CrearUserForm(forms.ModelForm):
 class EditarUserForm(forms.ModelForm):    
     class Meta:
         model = User
-        fields = ['username', 'email', 'first_name', 'last_name']
-       
-        
+        fields = ['username', 'email', 'first_name', 'last_name', 'is_superuser', 'is_active']
+        help_texts = {
+            'is_active': ('Indica si este usuario debe ser tratado como activo. Desactive esto en lugar de eliminar cuentas.'),
+            'is_superuser': ('Designa que este usuario tiene todos los permisos sin asignarlos explícitamente.'),
+        }
+              
 class CustomUserCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
