@@ -73,8 +73,8 @@ def creacion_usuario(request):
 
 #------------------------------------------Editar USuario ------------------------------------------------
 @login_required(login_url='login')
-def actualizar_usuario(request, pk):
-    usuario = get_object_or_404(User, pk=pk)
+def actualizar_usuario(request, id):
+    usuario = get_object_or_404(User, pk=id)
     if request.method == 'POST':
         form = EditarUserForm(request.POST, instance=usuario)
         if form.is_valid():
@@ -87,5 +87,18 @@ def actualizar_usuario(request, pk):
     else:
         form = EditarUserForm(instance=usuario)
     return render(request, 'usuario/editar.html', {'form': form})
+
+#---------------------------------------------------------------------------------------------------------
+
+#------------------------------------------Eliminar USuario ------------------------------------------------
+@login_required
+def eliminar_usuario(request, id):
+    usuario = get_object_or_404(User, pk=id)   
+    if request.user.is_superuser:  
+        usuario.delete()
+        messages.success(request, 'Usuario eliminado exitosamente.')
+    else:
+        messages.error(request, 'No tienes permiso para eliminar usuarios.')
+    return redirect('listar_usuarios') 
 
 #---------------------------------------------------------------------------------------------------------

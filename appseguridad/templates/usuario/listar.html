@@ -58,6 +58,7 @@
         transform: translateX(18px);
     }
 
+   
  
 </style>
 <!--  -->
@@ -200,7 +201,7 @@
                             </td>
                             <td>
                                 <a href="${editUrl}" class="btn btn-sm" style="background-color: #4273b5; color: white;"><i class='fa fa-edit'></i></a>
-                                <button class='btn btn-sm btn-danger'><i class='fa-solid fa-trash-can'></i></button>
+                                <button onclick="eliminarUsuario(${item_usuario.id})" class='btn btn-sm btn-danger'><i class='fa-solid fa-trash-can'></i></button>
                             </td>
                         </tr>`
                         ;
@@ -247,6 +248,26 @@
             const estadoSeleccionado = this.value;
             listaUsuarios(estadoSeleccionado);
         });
+    </script>
+
+    <!-- Eliminar un usuario -->
+    <script>
+        function eliminarUsuario(id){
+            Swal.fire({
+                title: "¿Realmente deseas eliminar este usuario?",
+                text: "ID del usuario: " + id,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#A19D9C',
+                confirmButtonText: 'Sí, eliminar',
+                cancelButtonText: 'No, cancelar',
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = `/usuarios/delete/${id}/`;
+                }
+            });
+        }
     </script>
   
           
