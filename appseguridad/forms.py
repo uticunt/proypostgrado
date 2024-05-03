@@ -4,7 +4,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Field, Div
 from django.contrib.auth.forms import UserCreationForm
 
-# Formulario para Crear Uusario
+#-------------------------------------- Formulario para Crear Uusario-------------------------------------
 class CrearUserForm(forms.ModelForm):
     username = forms.CharField(label='Username')
     password = forms.CharField(label='Contraseña', widget=forms.PasswordInput)
@@ -32,7 +32,7 @@ class CrearUserForm(forms.ModelForm):
             user.save()
         return user
     
-# Formulario para Editar Uusario
+#-------------------------------Formulario para Editar Uusario----------------------------------
 class EditarUserForm(forms.ModelForm):    
     class Meta:
         model = User
@@ -42,7 +42,7 @@ class EditarUserForm(forms.ModelForm):
             'is_superuser': ('Designa que este usuario tiene todos los permisos sin asignarlos explícitamente.'),
         }
 
-# Formulario para Perfil del Usuario
+# ------------------------- Formulario para Perfil del Usuario----------------------------
 class PerfilrUserForm(forms.ModelForm):    
     class Meta:
         model = User

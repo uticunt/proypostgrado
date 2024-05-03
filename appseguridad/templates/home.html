@@ -1,6 +1,5 @@
 {% extends "plantilla.html" %}
-{% block title %} POSTGRADO | Home {% endblock title %}
-{% comment %} {% block titleContent %}  {% endblock titleContent %} {% endcomment %}
+{% block title %} POSGRADO | Home {% endblock title %}
 {% load static %}
 {% block content %}
     <div class="p-5">
@@ -12,4 +11,20 @@
     </div>
 {% endblock %} 
 
- 
+{% block js %}   
+    <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    {% if messages %}
+        {% for m in messages %}
+            <script>
+                Swal.fire({
+                "title": "Éxito",
+                "text":"{{m}}",
+                "icon":"success"
+                })
+                console.log("{{m}}")
+            </script>
+        {% endfor %}
+    {% endif %}
+{% endblock %} 
+
+

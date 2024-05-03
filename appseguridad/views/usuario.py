@@ -12,7 +12,7 @@ from django.contrib.auth.hashers import make_password
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.hashers import is_password_usable
 from django.conf import settings
-from appseguridad.forms import CrearUserForm,EditarUserForm
+from appseguridad.forms import CrearUserForm,EditarUserForm, PerfilrUserForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -100,5 +100,21 @@ def eliminar_usuario(request, id):
     else:
         messages.error(request, 'No tienes permiso para eliminar usuarios.')
     return redirect('listar_usuarios') 
+
+#---------------------------------------------------------------------------------------------------------
+
+#------------------------------------------Editar Perfil USuario ------------------------------------------------
+@login_required
+def editar_perfil(request):
+    if request.method == 'POST':
+        form = PerfilrUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Tu perfil ha sido actualizado.')
+            return redirect('home')
+    else:
+        form = PerfilrUserForm(instance=request.user)
+
+    return render(request, 'usuario/perfil.html', {'form': form})
 
 #---------------------------------------------------------------------------------------------------------

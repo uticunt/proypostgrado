@@ -7,8 +7,5 @@ urlpatterns = [
     path('create/',usuario.creacion_usuario ,name="creacion_usuario"),
     path('edit/<int:id>/',usuario.actualizar_usuario ,name="actualizar_usuario"),
     path('delete/<int:id>/',usuario.eliminar_usuario ,name="eliminar_usuario"),
-
-
-    #path('reporte_credenciales/',usuario.descargar_excel_usuarios,name="descargar_excel_usuarios"),
-   
+    path('edit-perfil/',usuario.editar_perfil ,name="editar_perfil"),   
 ]
