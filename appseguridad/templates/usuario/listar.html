@@ -107,6 +107,16 @@
                             <tbody id="tablebody_usuarios">
 
                             </tbody>                         
+                            <tfoot>
+                                <tr>                               
+                                    <th >Id</th>
+                                    <th>Nombres</th>                         
+                                    <th>Username</th>
+                                    <th>Password</th>                                  
+                                    <th>Estado</th>                                  
+                                    <th><center>Opciones</center></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>                                    
@@ -159,13 +169,15 @@
                     next: "Siguiente",
                     previous: "Anterior"
                 }
-            },   
+            },           
             layout: {
-                topStart: {
-                    buttons: ['excel', 'pdf', 'print']
-                }
+                topStart: 'buttons'
             },
-                  
+            buttons:[ { extend: 'copy', text: '<i class="fa-solid fa-copy"></i>', className: 'btn btn-secundary', }, 
+                      { extend: 'excel', text: '<i class="fa-solid fa-file-excel"></i>', className: 'btn btn-success', },
+                      { extend: 'pdf', text: '<i class="fa-solid fa-file-pdf"></i>', className: 'btn btn-danger', },
+                      { extend: 'colvis', text: 'Filtrar columnas', className: 'btn btn-info', }                   
+                    ]    
                                   
         };
 
