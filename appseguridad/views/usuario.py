@@ -69,6 +69,12 @@ def creacion_usuario(request):
         form = CrearUserForm()
     return render(request, 'usuario/agregar.html', {'form': form})
 
+#Guardar en un archivo excel las credenciales
+
+
+
+
+
 #---------------------------------------------------------------------------------------------------------
 
 #------------------------------------------Editar USuario ------------------------------------------------
