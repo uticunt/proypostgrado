@@ -77,7 +77,7 @@ def creacion_usuario(request):
 #Guardar en un archivo excel las credenciales
 def save_password(username, password):
     # Ruta del archivo Excel
-    excel_file = 'C:/Users/mijha/Desktop/modulo curricular/proypostgrado/appseguridad/templates/usuario/credenciales_usuarios.xlsx'
+    excel_file = 'C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/credenciales_usuarios.xlsx'
     
     # Si el archivo no existe, crearlo y añadir cabeceras
     if not os.path.exists(excel_file):
@@ -98,7 +98,7 @@ def save_password(username, password):
 #Descargar Credenciales en excel
 def download_excel(request):   
     # Ruta al archivo Excel en el directorio de medios
-    excel_path = 'C:/Users/mijha/Desktop/modulo curricular/proypostgrado/appseguridad/templates/usuario/credenciales_usuarios.xlsx'
+    excel_path = 'C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/credenciales_usuarios.xlsx'
     # Respuesta de descarga del archivo Excel
     with open(excel_path, 'rb') as excel_file:
         response = HttpResponse(excel_file.read(), content_type='application/vnd.ms-excel')
