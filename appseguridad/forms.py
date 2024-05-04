@@ -50,6 +50,9 @@ class PerfilrUserForm(forms.ModelForm):
         widgets = {              
             'username': forms.TextInput(attrs={'readonly': True}),       
         }
+        help_texts = {
+            'email': ('Proporcione el correo electronico al cual desea que le lleguen sus credenciales.'),
+        }
        
               
 class CustomUserCreationForm(UserCreationForm):

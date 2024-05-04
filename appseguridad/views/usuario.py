@@ -20,6 +20,9 @@ from openpyxl import Workbook
 from django.http.response import HttpResponse
 from openpyxl.styles import Font, Alignment, Border, Side
 from openpyxl.utils import get_column_letter
+import os
+import openpyxl
+from openpyxl import Workbook
 
 #---------------------------------------------Listar usuarios---------------------------------------------
 @login_required(login_url='login')
@@ -59,8 +62,10 @@ def creacion_usuario(request):
     if request.method == 'POST':
         form = CrearUserForm(request.POST)
         if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            save_password(username,password)
             form.save()
-            username = form.cleaned_data.get('username')
             messages.success(request, f'Usuario {username} creado exitosamente.')
             return redirect('listar_usuarios')
         else:
@@ -70,10 +75,25 @@ def creacion_usuario(request):
     return render(request, 'usuario/agregar.html', {'form': form})
 
 #Guardar en un archivo excel las credenciales
-
-
-
-
+def save_password(username, password):
+    # Ruta del archivo Excel
+    excel_file = 'C:/Users/mijha/Desktop/modulo curricular/proypostgrado/appseguridad/templates/usuario/credenciales_usuarios.xlsx'
+    
+    # Si el archivo no existe, crearlo y añadir cabeceras
+    if not os.path.exists(excel_file):
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet['A1'] = 'Username'
+        sheet['B1'] = 'Password'
+        workbook.save(filename=excel_file)
+    
+    # Abrir el archivo existente y agregar una nueva entrada
+    workbook = openpyxl.load_workbook(filename=excel_file)
+    sheet = workbook.active
+    max_row = sheet.max_row + 1
+    sheet.cell(row=max_row, column=1).value = username
+    sheet.cell(row=max_row, column=2).value = password
+    workbook.save(filename=excel_file)
 
 #---------------------------------------------------------------------------------------------------------
 
