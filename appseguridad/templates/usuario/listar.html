@@ -77,18 +77,20 @@
             </div> 
 
             <div class="card-body">           
-                <div class="row p-2 mb-2 d-flex align-content-center">     
-                    <div class="col-md-2 col-sm-6"> 
+                <div class="row p-2 mb-2 mr-1 d-flex align-content-center">     
+                    <div class="col-md-7 col-sm-6"></div>
+                    <div class="col-lg-2 col-sm-6"> 
                         <label for="selectStatusUSer">Filtra Estado:</label> 
                     </div>                       
-                    <div class="col-md-2 col-sm-6" style="margin-left: -80px;">                                                     
+                    <div class="col-lg-2 col-sm-6" style="margin-left: -100px;">                                                     
                         <select class="form-control form-control-sm" id="filtroEstado" name="estado">
                             <option value="todos">Todos</option>
                             <option value="activo">Activos</option>
                             <option value="inactivo">Inactivos</option>                           
                         </select>
                     </div> 
-                                                                                                         
+                    <div class="col-lg-2"> <a href="{% url 'download_excel' %}" class="btn btn-sm" style="background-color: #28487c; color: white; width: 100%;"><i class="fa-solid fa-user-shield"></i> Credenciales</a></div>
+
                 </div>           
                 <!-- Listado -->
                 <div class="col-lg-12 col-md-12 col-sm-12">

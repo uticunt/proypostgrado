@@ -95,6 +95,16 @@ def save_password(username, password):
     sheet.cell(row=max_row, column=2).value = password
     workbook.save(filename=excel_file)
 
+#Descargar Credenciales en excel
+def download_excel(request):   
+    # Ruta al archivo Excel en el directorio de medios
+    excel_path = 'C:/Users/mijha/Desktop/modulo curricular/proypostgrado/appseguridad/templates/usuario/credenciales_usuarios.xlsx'
+    # Respuesta de descarga del archivo Excel
+    with open(excel_path, 'rb') as excel_file:
+        response = HttpResponse(excel_file.read(), content_type='application/vnd.ms-excel')
+        response['Content-Disposition'] = 'attachment; filename=credenciales_usuarios.xlsx'
+        return response
+
 #---------------------------------------------------------------------------------------------------------
 
 #------------------------------------------Editar USuario ------------------------------------------------
