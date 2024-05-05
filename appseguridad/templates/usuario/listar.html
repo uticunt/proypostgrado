@@ -77,12 +77,12 @@
             </div> 
 
             <div class="card-body">           
-                <div class="row p-2 mb-2 mr-1 d-flex align-content-center">     
-                    <div class="col-md-7 col-sm-6"></div>
-                    <div class="col-lg-2 col-sm-6"> 
+                <div class="row p-2 mb-2">     
+                    <div class="col-md-6"></div>
+                    <div class="col-lg-2"> 
                         <label for="selectStatusUSer">Filtra Estado:</label> 
                     </div>                       
-                    <div class="col-lg-2 col-sm-6" style="margin-left: -100px;">                                                     
+                    <div class="col-lg-2" style="margin-left: -100px;">                                                     
                         <select class="form-control form-control-sm" id="filtroEstado" name="estado">
                             <option value="todos">Todos</option>
                             <option value="activo">Activos</option>
@@ -175,10 +175,10 @@
             layout: {
                 topStart: 'buttons'
             },
-            buttons:[ { extend: 'copy', text: '<i class="fa-solid fa-copy"></i>', className: 'btn btn-secundary', }, 
-                      { extend: 'excel', text: '<i class="fa-solid fa-file-excel"></i>', className: 'btn btn-success', },
-                      { extend: 'pdf', text: '<i class="fa-solid fa-file-pdf"></i>', className: 'btn btn-danger', },
-                      { extend: 'colvis', text: 'Filtrar columnas', className: 'btn btn-info', }                   
+            buttons:[ { extend: 'copy', text: '<i class="fa-solid fa-copy"></i>', className: 'btn btn-secundary', exportOptions:{columns: [':visible']} }, 
+                      { extend: 'excel', text: '<i class="fa-solid fa-file-excel"></i>', className: 'btn btn-success', exportOptions:{columns: [':visible']}},
+                      { extend: 'pdf', text: '<i class="fa-solid fa-file-pdf"></i>', className: 'btn btn-danger', exportOptions:{columns: [':visible']}},
+                      { extend: 'colvis', text: 'Filtrar columnas',className: 'btn btn-info', }                   
                     ]    
                                   
         };
