@@ -13,14 +13,17 @@
     input[name="username"],[name="password"], [name="first_name"], [name="last_name"],[name="email"]
     {
         height: 30px;
-        font-size: 11px;
+        font-family: "Red Hat Display", sans-serif;       
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-size: 13px;
     }
 
 </style>
 <div class="p-1">
     <div class="card mx-5 my-4 ">
         <div class="card-header">
-            <h4 class="card-title" style="font-size: 15px;" >NUEVO USUARIO</h4>        
+            <h4 class="card-title pl-5 pt-2" style="font-size: 14px;"><i class="fa-solid fa-plus mr-2"></i><b> NUEVO USUARIO</b></h4>         
         </div>       
         <div class="card-body">            
             <form method="post" class="">
@@ -45,8 +48,8 @@
                         </div>              
                         
                         <div class="row mt-3">
-                            <div class="col-lg-6"><button type="submit" class="btn" style="width: 100%; background-color: #28487c; font-size: 12px; color: white;">Guardar</button></div>
-                            <div class="col-lg-6"><a href="{% url 'listar_usuarios' %}" class="btn" style="width: 100%; background-color: rgb(231, 237, 247); font-size: 12px; color: black;">Cancelar</a></div>
+                            <div class="col-lg-6"><button type="submit" class="btn" style="width: 100%; background-color: #28487c; font-size: 12px; color: white;"><b>Guardar</b></button></div>
+                            <div class="col-lg-6"><a href="{% url 'listar_usuarios' %}" class="btn" style="width: 100%; background-color: rgb(231, 237, 247); font-size: 12px; color: black;"><b>Cancelar</b></a></div>
                         </div>                      
                     </div>
                 </div>                           

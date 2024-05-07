@@ -9,8 +9,8 @@
         color: white;
     }
 
-    thead{
-        background-color: #c8c8c8;
+    thead, tfoot{
+        background-color: #f0f3f5 !important;
     }
 
     .switch {
@@ -65,38 +65,41 @@
 
     <div class="p-2">
         <div class="card mt-1">
-            <div class="card-header d-flex justify-content-between ">           
-                <h4 class="card-title" style="font-size: 15px;">LISTADO DE USUARIOS</h4>                          
+            <div class="card-header d-flex ">           
+                <h4 class="card-title pl-3 pt-1" style="font-size: 14px;"><i class="fa-solid fa-bars mr-2"></i><b> LISTADO DE USUARIOS</b></h4>                          
                 {% if perms.appevaluacion.view_doctorado %}
-                <div class="ml-auto">
-                    <a href="{% url 'creacion_usuario' %}" class='btn btn-sm' style="background-color:#e7edf7 ; font-size: 10px;">
-                        <i class='fas fa-plus fa-sm'></i> NUEVO
+                <div class="ml-auto pr-4 pt-1">
+                    <a href="{% url 'creacion_usuario' %}" class='btn btn-sm' style="background-color:#e7edf7 ; font-size: 12px;">
+                       <b><i class='fas fa-plus fa-sm'></i> NUEVO</b> 
                     </a>
                 </div>  
                 {% endif %}          
             </div> 
 
             <div class="card-body">           
-                <div class="row p-2 mb-2">     
-                    <div class="col-md-6"></div>
-                    <div class="col-lg-2"> 
-                        <label for="selectStatusUSer">Filtra Estado:</label> 
-                    </div>                       
-                    <div class="col-lg-2" style="margin-left: -100px;">                                                     
-                        <select class="form-control form-control-sm" id="filtroEstado" name="estado">
-                            <option value="todos">Todos</option>
-                            <option value="activo">Activos</option>
-                            <option value="inactivo">Inactivos</option>                           
-                        </select>
-                    </div> 
-                    <div class="col-lg-2"> <a href="{% url 'download_excel' %}" class="btn btn-sm" style="background-color: #28487c; color: white; width: 100%;"><i class="fa-solid fa-user-shield"></i> Credenciales</a></div>
+                <div class="row">     
+                    <div class="col-lg-7">
+                            <div class="col-lg-1"> 
+                                <label for="selectStatusUSer">Estado:</label> 
+                            </div>  
+                            <div class="col-lg-6">                                                     
+                                <select class="form-control form-control-sm" id="filtroEstado" name="estado">
+                                    <option value="todos">Todos</option>
+                                    <option value="activo">Activos</option>
+                                    <option value="inactivo">Inactivos</option>                           
+                                </select>
+                            </div>   
+                    </div>                     
+                    <div class="col-lg-3"></div>                            
+                    <div class="col-lg-2"> <a href="{% url 'download_excel' %}" class="btn btn-sm" style="background-color: #28487c; color: white; width: 90%;"><i class="fa-solid fa-user-shield"></i> Credenciales</a></div>
 
-                </div>           
+                </div>                  
+                <hr class="m-3 mb-3">                
                 <!-- Listado -->
                 <div class="col-lg-12 col-md-12 col-sm-12">
                     <div class="table-responsive">
-                        <table class="table table-sm table-striped my-3" style="width: 100%;" id="tablausuarios">
-                            <thead class="table-light">
+                        <table class="table table-sm my-3" style="width: 100%;" id="tablausuarios">
+                            <thead>
                                 <tr>                               
                                     <th >Id</th>
                                     <th>Nombres</th>                         
@@ -178,7 +181,7 @@
             buttons:[ { extend: 'copy', text: '<i class="fa-solid fa-copy"></i>', className: 'btn btn-secundary', exportOptions:{columns: [':visible']} }, 
                       { extend: 'excel', text: '<i class="fa-solid fa-file-excel"></i>', className: 'btn btn-success', exportOptions:{columns: [':visible']}},
                       { extend: 'pdf', text: '<i class="fa-solid fa-file-pdf"></i>', className: 'btn btn-danger', exportOptions:{columns: [':visible']}},
-                      { extend: 'colvis', text: 'Filtrar columnas',className: 'btn btn-info', }                   
+                      { extend: 'colvis', text: 'Filtrar campos',className: 'btn btn-info' }                   
                     ]    
                                   
         };
@@ -203,7 +206,7 @@
                     const editUrl = `/usuarios/edit/${item_usuario.id}/`;
                     content += `
                         <tr>                            
-                            <td>${item_usuario.id}</td>                    
+                            <td><center>${item_usuario.id}</center></td>                    
                             <td>${item_usuario.first_name}  ${item_usuario.last_name}</td>                                                           
                             <td>${item_usuario.username}</td> 
                             <td>${item_usuario.password}</td>
@@ -214,8 +217,10 @@
                                 </label>
                             </td>
                             <td>
-                                <a href="${editUrl}" class="btn btn-sm" style="background-color: #4273b5; color: white;"><i class='fa fa-edit'></i></a>
-                                <button onclick="eliminarUsuario(${item_usuario.id})" class='btn btn-sm btn-danger'><i class='fa-solid fa-trash-can'></i></button>
+                                <center>
+                                    <a href="${editUrl}" class="btn btn-sm" style="background-color: #4273b5; color: white;"><i class='fa fa-edit'></i></a>
+                                    <button onclick="eliminarUsuario(${item_usuario.id})" class='btn btn-sm btn-danger'><i class='fa-solid fa-trash-can'></i></button>
+                                </center>
                             </td>
                         </tr>`
                         ;
