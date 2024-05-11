@@ -9,4 +9,7 @@ urlpatterns = [
     path('delete/<int:id>/',usuario.eliminar_usuario ,name="eliminar_usuario"),
     path('edit-perfil/',usuario.editar_perfil ,name="editar_perfil"),  
     path('download-excel/', usuario.download_excel, name='download_excel'), 
+
+    path('download_excel_activos/', usuario.download_excel_activos, name='download_excel_activos'), 
+    path('envio-correo/', usuario.enviar_correo, name='enviar_correo'), 
 ]

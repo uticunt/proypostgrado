@@ -2,5 +2,7 @@
 proypostgrado/settings.py
 /env-local-adicional/
 /appseguridad/templates/usuario/credenciales_usuarios.xlsx
+/appseguridad/templates/usuario/credenciales_usuarios - copia.xlsx
+/appseguridad/templates/usuario/usuarios_activos.xlsx
 /appseguridad/views/usuario.py
 

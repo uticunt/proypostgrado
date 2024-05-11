@@ -1,0 +1,63 @@
+{% extends "plantilla.html" %}
+{% block title %} POSGRADO | Agregar Usuarios  {% endblock title %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+<style>
+    .card-header{
+        background-color: #2f5793;
+        color: white;
+    }
+
+    input[name="username"],[name="password"], [name="first_name"], [name="last_name"],[name="email"]
+    {
+        height: 30px;
+        font-family: "Red Hat Display", sans-serif;       
+        font-optical-sizing: auto;
+        font-weight: 500;
+        font-size: 13px;
+    }
+
+</style>
+<div class="p-1">
+    <div class="card mx-5 my-4 ">
+        <div class="card-header">
+            <h4 class="card-title pl-5 pt-2" style="font-size: 14px;"><i class="fa-solid fa-plus mr-2"></i><b> NUEVO CORREO</b></h4>         
+        </div>       
+        <div class="card-body">          
+            <div class="col-lg-2"> <a href="{% url 'download_excel_activos' %}" class="btn btn-sm" style="background-color: #28487c; color: white; width: 90%;"><i class="fa-solid fa-user-shield"></i> usuarios_activos</a></div>                 
+  
+            <form method="post" class="">
+                {% csrf_token %}
+                <div class="row px-5 py-3">           
+                    <!-- Prueba -->
+                    <div class="col-lg-12">
+                        <div class="row">
+                            <div class="col-lg-6">{{ form.nombre | as_crispy_field }}</div>          
+                        </div>    
+                        <div class="row">
+                            <div class="col-lg-6">{{ form.email | as_crispy_field }}</div>
+                        </div>        
+                        <div class="row">
+                            <div class="col-lg-6">{{ form.contenido | as_crispy_field }}</div>                                                                    
+                        </div>              
+                        
+                        <div class="row mt-3">
+                            <div class="col-lg-6"><button type="submit" class="btn" style="width: 100%; background-color: #28487c; font-size: 12px; color: white;"><b>Guardar</b></button></div>
+                            <div class="col-lg-6"><a href="{% url 'listar_usuarios' %}" class="btn" style="width: 100%; background-color: rgb(231, 237, 247); font-size: 12px; color: black;"><b>Cancelar</b></a></div>
+                        </div>                      
+                    </div>
+                </div>                           
+            </form>           
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block js %}
+   
+  
+{% endblock %} 

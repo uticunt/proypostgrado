@@ -76,3 +76,9 @@ class CustomUserCreationForm(UserCreationForm):
                 ),
             )
         )
+
+# ------------------------- Formulario para Envio de Credenciales  ----------------------------
+class CorreoForm(forms.Form):
+    nombre = forms.CharField(label='Nombre')
+    email = forms.CharField(label='Email')
+    contenido = forms.CharField(label='Contenido')
