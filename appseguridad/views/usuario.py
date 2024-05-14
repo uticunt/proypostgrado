@@ -24,6 +24,7 @@ import os
 import openpyxl
 from openpyxl import Workbook
 from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 #---------------------------------------------Listar usuarios---------------------------------------------
 @login_required(login_url='login')
@@ -224,14 +225,17 @@ def enviar_correo(request):
     if request.method == 'POST':
         form = CorreoForm(data = request.POST)
         if form.is_valid():
-            nombre = form.cleaned_data.get('nombre')
-            email = form.cleaned_data.get('email')
-            contenido = form.cleaned_data.get('contenido')
+            nombre = request.POST['nombre']
+            email = request.POST['email']
+            contenido = request.POST['contenido']
 
-            email = EmailMessage("Mensaje del Servidor",
-                    "El usuario con nombre {} con la direccion {} escribe lo siguiente: \n\n {}".format(nombre,email,contenido),'', ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe'], reply_to=[email])
+            template = render_to_string('usuario/formato-correo.html',{'nombre':nombre,'email':email,'contenido':contenido})
+
+            email = EmailMessage("Envio de credenciales", template ,settings.EMAIL_HOST_USER,['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe'], reply_to=[email])
             
             try:
+                email.content_subtype = 'html'
+                email.fail_silently = False
                 email.send()
                 print('Se envio correctamente')
             except Exception as e:
