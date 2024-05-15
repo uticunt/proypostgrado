@@ -25,6 +25,10 @@ import openpyxl
 from openpyxl import Workbook
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
+from django.contrib.sites.shortcuts import get_current_site
+from email.mime.image import MIMEImage
+
+
 
 #---------------------------------------------Listar usuarios---------------------------------------------
 @login_required(login_url='login')
@@ -223,27 +227,58 @@ def download_excel_activos(request):
 @login_required(login_url='login')
 def enviar_correo(request):
     if request.method == 'POST':
-        form = CorreoForm(data = request.POST)
-        if form.is_valid():
-            nombre = request.POST['nombre']
-            email = request.POST['email']
-            contenido = request.POST['contenido']
+        # Obtener los datos del formulario directamente del request
+        asunto = request.POST.get('asunto')
+        encabezado = request.POST.get('encabezado')
+        nombre = request.POST.get('nombre')
+        contenido = request.POST.get('contenido')
+        #adjuntos = request.FILES.getlist('adjuntos')
 
-            template = render_to_string('usuario/formato-correo.html',{'nombre':nombre,'email':email,'contenido':contenido})
+        # Renderizar el template del correo con los datos del formulario
+        template = render_to_string('usuario/formato-correo.html', {
+            'nombre': nombre,
+            'contenido': contenido,
+            'encabezado': encabezado,
+            'image_cid': 'utic_banner'
+        })
 
-            email = EmailMessage("Envio de credenciales", template ,settings.EMAIL_HOST_USER,['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe'], reply_to=[email])
-            
-            try:
-                email.content_subtype = 'html'
-                email.fail_silently = False
-                email.send()
-                print('Se envio correctamente')
-            except Exception as e:
-                print(f'No se envio correctamente : {e}')
+        # Crear el objeto EmailMessage
+        email = EmailMessage(asunto, template, settings.EMAIL_HOST_USER, ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe'], reply_to=[settings.EMAIL_HOST_USER])
+        
+        try:
+            # Configurar el tipo de contenido del correo
+            email.content_subtype = 'html'
+            email.fail_silently = False
 
-            return redirect('listar_usuarios')      
+            # Adjuntar la imagen al correo
+            image_path = os.path.join('C:/Users/mijha/Desktop/modulo curricular/proypostgrado/appseguridad/templates/usuario/utic_banner.jpeg')
+            with open(image_path, 'rb') as img:
+                mime_image = MIMEImage(img.read())
+                mime_image.add_header('Content-ID', '<utic_banner>')
+                email.attach(mime_image)
+
+            # Adjuntar archivos subidos
+            adjunto_path = os.path.join('C:/Users/mijha/Desktop/modulo curricular/proypostgrado/appseguridad/templates/usuario/informacion.jpeg')
+            with open(adjunto_path, 'rb') as archivo:
+                contenido = archivo.read()
+
+            nombre_archivo = os.path.basename(adjunto_path)
+            email.attach(nombre_archivo, contenido)
+
+
+            # Enviar el correo
+            email.send()
+            messages.error(request, "Correo enviado exitosamente.")
+            print('Se envió correctamente')
+        except Exception as e:
+            messages.error(request, "¡Error! Correo NO enviado.")
+            print(f'No se envió correctamente: {e}')
+
+        return redirect('listar_usuarios')
+
     else:
         form = CorreoForm()
+
     return render(request, 'usuario/envio_correo.html', {'form': form})
 
 

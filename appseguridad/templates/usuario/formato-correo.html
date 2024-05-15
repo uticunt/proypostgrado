@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CORREO ELECTRONICO</title>
-</head>
+    {% load static %}
 <body>
-    <h1>¡Bienvenido al Modulo de Evaluacion curricular de la Escuela de Posgrado del proceso de admisión 2024-I!</h1>
-    <label for="">Estimado Docente <b>{{nombre}}</b></label>
+    <h1>{{encabezado}}</h1>
+    <label for="">Estimado/a Docente <b>{{nombre}}</b></label>
     <br>
-    <p><b></b>{{email}}</p>
     <br>
     <p><b>NOTA:</b>{{contenido}}</p>
     <br><br>
@@ -21,7 +20,7 @@
     <br>
     <label for="">Link de acceso al sistema: <a href="http://www.epgnew.unitru.edu.pe:84"> http://www.epgnew.unitru.edu.pe:84 ✍️</a> </label>    
     <br><br>
-    
+    <img src="cid:utic_banner" alt="UTIC Banner">
 
 </body> 
 </html>

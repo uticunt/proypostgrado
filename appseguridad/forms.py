@@ -78,7 +78,38 @@ class CustomUserCreationForm(UserCreationForm):
         )
 
 # ------------------------- Formulario para Envio de Credenciales  ----------------------------
+class MultiFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+    def value_from_datadict(self, data, files, name):
+        if name in files:
+            return files.getlist(name)
+        return []
+
+class MultiFileField(forms.FileField):
+    widget = MultiFileInput
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('required', False)
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        if not data and self.required:
+            raise forms.ValidationError(self.error_messages['required'])
+        return data
+
 class CorreoForm(forms.Form):
-    nombre = forms.CharField(label='Nombre')
-    email = forms.CharField(label='Email')
-    contenido = forms.CharField(label='Contenido')
+    asunto = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 1, 'cols': 40}),
+        initial='ACCESO AL MODULO DE EVALUACIÓN CURRICULAR PROCESO DE ADMISIÓN 2024-I',
+        label='Asunto')
+    encabezado = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 1, 'cols': 40}),
+        initial='¡Bienvenido al Modulo de Evaluacion curricular de la Escuela de Posgrado del proceso de admisión 2024-I!',
+        label='Titulo')
+    nombre = forms.CharField(label='Nombre')   
+    contenido = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 6, 'cols': 40}),
+        initial=' Se ha remitido a todos los Jurados Evaluadores para el proceso de Admisión 2024 - I; el cual ha sido dirigido y registrado en el sistema de evaluación curricular por parte del comité de admisión de la Escuela de Posgrado. En el siguiente enlace podrá registrar y evaluar la calificación según los rangos e indicadores registrados en el reglamento de admisión 2024-I.',
+        label='Contenido')
+
