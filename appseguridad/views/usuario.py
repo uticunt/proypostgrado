@@ -243,7 +243,7 @@ def enviar_correo(request):
         })
 
         # Crear el objeto EmailMessage
-        email = EmailMessage(asunto, template, settings.EMAIL_HOST_USER, ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe','ajzavaleta@unitru.edu.pe'], reply_to=[settings.EMAIL_HOST_USER])
+        email = EmailMessage(asunto, template, settings.EMAIL_HOST_USER, ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe'], reply_to=[settings.EMAIL_HOST_USER])
         
         try:
             # Configurar el tipo de contenido del correo
