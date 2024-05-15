@@ -243,7 +243,7 @@ def enviar_correo(request):
         })
 
         # Crear el objeto EmailMessage
-        email = EmailMessage(asunto, template, settings.EMAIL_HOST_USER, ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe'], reply_to=[settings.EMAIL_HOST_USER])
+        email = EmailMessage(asunto, template, settings.EMAIL_HOST_USER, ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe','ajzavaleta@unitru.edu.pe'], reply_to=[settings.EMAIL_HOST_USER])
         
         try:
             # Configurar el tipo de contenido del correo
@@ -251,14 +251,14 @@ def enviar_correo(request):
             email.fail_silently = False
 
             # Adjuntar la imagen al correo
-            image_path = os.path.join('C:/Users/mijha/Desktop/modulo curricular/proypostgrado/appseguridad/templates/usuario/utic_banner.jpeg')
+            image_path = os.path.join('C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/utic_banner.jpeg')
             with open(image_path, 'rb') as img:
                 mime_image = MIMEImage(img.read())
                 mime_image.add_header('Content-ID', '<utic_banner>')
                 email.attach(mime_image)
 
             # Adjuntar archivos subidos
-            adjunto_path = os.path.join('C:/Users/mijha/Desktop/modulo curricular/proypostgrado/appseguridad/templates/usuario/informacion.jpeg')
+            adjunto_path = os.path.join('C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/informacion.jpeg')
             with open(adjunto_path, 'rb') as archivo:
                 contenido = archivo.read()
 
