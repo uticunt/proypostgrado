@@ -229,18 +229,20 @@ def enviar_correo(request):
     if request.method == 'POST':
         # Obtener los datos del formulario directamente del request
         asunto = request.POST.get('asunto')
-        encabezado = request.POST.get('encabezado')
-        nombre = request.POST.get('nombre')
-        contenido = request.POST.get('contenido')
+        #encabezado = request.POST.get('encabezado')
+        #nombre = request.POST.get('nombre')
+        #contenido = request.POST.get('contenido')
         #adjuntos = request.FILES.getlist('adjuntos')
 
         # Renderizar el template del correo con los datos del formulario
-        template = render_to_string('usuario/formato-correo.html', {
-            'nombre': nombre,
-            'contenido': contenido,
-            'encabezado': encabezado,
-            'image_cid': 'utic_banner'
-        })
+        #template = render_to_string('usuario/formato-correo.html', {
+        #    'nombre': nombre,
+        #    'contenido': contenido,
+        #    'encabezado': encabezado,
+        #    'image_cid': 'utic_banner'
+        #})
+
+        template = render_to_string('usuario/formato-correo.html')
 
         # Crear el objeto EmailMessage
         email = EmailMessage(asunto, template, settings.EMAIL_HOST_USER, ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe', 'ajzavaleta@unitru.edu.pe'], reply_to=[settings.EMAIL_HOST_USER])
@@ -258,13 +260,21 @@ def enviar_correo(request):
                 email.attach(mime_image)
 
             # Adjuntar archivos subidos
-            adjunto_path = os.path.join('C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/informacion.jpeg')
-            with open(adjunto_path, 'rb') as archivo:
-                contenido = archivo.read()
+            adjunto_path1 = os.path.join('C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/informacion.jpeg')
+            with open(adjunto_path1, 'rb') as archivo1:
+                contenido1 = archivo1.read()
 
-            nombre_archivo = os.path.basename(adjunto_path)
-            email.attach(nombre_archivo, contenido)
+            nombre_archivo1 = os.path.basename(adjunto_path1)
+            email.attach(nombre_archivo1, contenido1)
 
+
+              # Adjuntar archivos subidos
+            adjunto_path2 = os.path.join('C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/ManualUsuario.pdf')
+            with open(adjunto_path2, 'rb') as archivo2:
+                contenido2 = archivo2.read()
+
+            nombre_archivo2 = os.path.basename(adjunto_path2)
+            email.attach(nombre_archivo2, contenido2)
 
             # Enviar el correo
             email.send()
