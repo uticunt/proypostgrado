@@ -243,9 +243,9 @@ def enviar_correo(request):
         #})
 
         template = render_to_string('usuario/formato-correo.html')
-
+        correos = ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe']
         # Crear el objeto EmailMessage
-        email = EmailMessage(asunto, template, settings.EMAIL_HOST_USER, ['mijharv@gmail.com', 'mjrojasv@unitru.edu.pe', 'ajzavaleta@unitru.edu.pe'], reply_to=[settings.EMAIL_HOST_USER])
+        email = EmailMessage(asunto, template, 'UTIC | POSGRADO', correos , reply_to=[settings.EMAIL_HOST_USER])
         
         try:
             # Configurar el tipo de contenido del correo
@@ -260,7 +260,7 @@ def enviar_correo(request):
                 email.attach(mime_image)
 
             # Adjuntar archivos subidos
-            adjunto_path1 = os.path.join('C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/informacion.jpeg')
+            adjunto_path1 = os.path.join('C:/wamp64/www/proypostgrado/appseguridad/templates/usuario/cronograma.pdf')
             with open(adjunto_path1, 'rb') as archivo1:
                 contenido1 = archivo1.read()
 
